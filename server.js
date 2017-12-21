@@ -38,10 +38,20 @@ app.use(express.static("public"));
 // Mount all resource routes
 app.use("/api/users", usersRoutes(knex));
 
+//app.use("/users", usersRoutes(knex));
 // Home page
 app.get("/", (req, res) => {
   res.render("index");
+  // check if user login ?
 });
+
+app.get('/users/new', (req, res) => {
+  res.send("reg ok!");
+})
+
+
+// add login route later
+
 
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
