@@ -5,39 +5,42 @@ module.exports = function makeDataHelpers(db){
   return {
 
     // Get a list of all the todos for a given user ID
-    queryTodos: function (userId){
-      knex.select('*').from('todos')
+    queryTodos: function (userid, cb){
+      db.select('*').from('todos')
         .where('user_id', '=', userid)
         .asCallback(function(error, rows){
-          return rows;
+          cb(null,rows);
         })
     },
 
     // Create a new to do when given title
-    createTodos: function(title, userId){
-      knex('todos').insert({
+    createTodos: function(title, userId, cb){
+      db('todos').insert({
         title: title,
         user_id: userId
       }).asCallback(function(err){
         if(err){
-          console.log(err);
+          cb(err);
         }
       })
     },
 
     // Get all the categories assigned to a to do
-    getTodoCategories: function(taskId){
-      knex.select('categories.name').from('todos')
+    getTodoCategories: function(taskId, cb){
+      db.select('categories.name').from('todos')
         .innerjoin('todo_category', 'todos.id', 'todo_category.todo_id')
         .innerjoin('categories', 'todo_category.category_id', 'categories.id')
         .asCallback(function(err, rows){
-          return rows;
+          if(err){
+            cb(err, null);
+          }
+          cb(null, rows);
         })
-    }
+    },
 
     // Update an existing to do
-    updateTodo: function(taskObj){
-      knex('todos').where('id', '=', taskObj.id)
+    updateTodo: function(taskObj, cb){
+      db('todos').where('id', '=', taskObj.id)
         .update({
           title: taskObj.title,
           description: taskObj.description,
@@ -46,12 +49,23 @@ module.exports = function makeDataHelpers(db){
           recommendation_request: taskObj.recommendation_request,
           // user_id: taskObj.userId
         })
+        .asCallback(function(err, rows){
+          if(err){
+            cb(err, null);
+          }
+          cb(null, rows);
+        })
     },
 
     // Delete a to do
-    deleteToDo: function(taskId){
-      knex('todos').where('id', '=', taskId)
-        .del();
+    deleteToDo: function(taskId, cb){
+      db('todos').where('id', '=', taskId)
+        .del()
+        .asCallback(function(err){
+          if(err){
+            cb(err);
+          }
+        })
     }
 
 

@@ -3,21 +3,27 @@
 const express = require('express');
 const router  = express.Router();
 
-module.exports = (knex) => {
+module.exports = (datahelper) => {
 
-  router.get("/", (req, res) => {
-    knex
-      .select("*")
-      .from("users")
-      .then((results) => {
-        res.json(results);
-    });
-  });
+  // router.get("/", (req, res) => {
+  //   datahelper
+  //     .select("*")
+  //     .from("users")
+  //     .then((results) => {
+  //       res.json(results);
+  //   });
+  // });
   // GET /users/:uid/todos
   router.get("/:uid/todos", (req,res)  => {
     // select todos where user_id == uid;
     // send to ejs template tp render.
-    res.send("users :uid todos ok ");
+    datahelper.queryTodos('2', (err, data) => {
+      console.log(data);
+      res.send(200);
+    });
+    //console.log(result);
+    //return res.json(datahelper.queryTodos('2'));
+    //res.send("users :uid todos ok ");
   })
   // //get a registration page;
   // router.get('/new', (req, res) => {
