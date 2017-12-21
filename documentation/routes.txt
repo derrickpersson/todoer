@@ -1,0 +1,25 @@
+Routes:
+
+Get index/home page (lists all to-dos):
+GET ( “/”)
+
+Get a registration page:
+GET (“/users/new”)
+
+Create a new user:
+POST(“/users/new”)
+
+Get new To Do creation page:
+GET(“/users/:uid/todos/new”)
+
+Create a new To Do:
+POST (“/users/:uid/todos/new”)
+
+Update a To Do:
+PUT(“/users/:uid/todos/:tid”)
+
+Delete a To Do:
+DELETE(“/users/:uid/todos/:tid”)
+
+Connect with API:
+POST(“/users/:uid/todos/:tid”)

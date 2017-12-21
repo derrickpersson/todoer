@@ -1,0 +1,132 @@
+Title: User should be able to keep track of their ‘To Dos’
+
+As a User
+I want to keep track of stuff
+Because I am forgetful
+
+Given that I need to track items
+When I click ‘add item’
+Then I can input an item
+And the item gets added to my list
+
+Additional Info:
+‘+’ icon
+List is additive; limit? (Collapse sections? Page(s)?)
+
+Title: User’s ‘To Dos’ should be automatically categorized
+
+As a User
+I want to sort items easily
+Because it makes it easier to access them later
+
+Given I add an item
+When that item gets added
+Then the item should be automatically categorized
+And the item should be updated to note that category
+
+Additional Info:
+Label for each category (color coded? Or icon based?)
+Determine all categories
+Error message
+
+Title: User should get recommendations based on their ‘To Dos’
+
+As a User
+I want to get recommendations
+Because it’ll make doing things easier
+
+Given I’ve added a task
+When I visit the page with my task on it
+Then recommendations are shown that are relevant
+And I can visit their recommendations
+
+Additional Info:
+Recommendations are external links (or info)
+Recommendations should come from API requests
+
+Title: User should be able to change a category
+
+As a User
+I want to be able to change the auto-categorization
+Because the item was mis-categorized
+
+Given an item was mis-categorized
+When I added it
+Then I am able to change it to the correct category
+And the label should change on the item to reflect this change
+
+Additional Info:
+Drop down of different categories; clicking on the category updates the item to the new category.
+
+Title: User should be able to register / login / logout
+
+As a User
+I want to have my own to-do’s
+Because it is relevant to me
+
+Given that I need to have my own to-do’s
+When I go to ‘To Do-er’
+Then I can login / register
+And have my own list of To Dos
+And I can log out when I’m finished
+
+Additional Info:
+Log in Page
+Log Out page w/ message
+Register / landing page
+
+Title: User should be able to view items in multiple lists
+
+As a User
+I want to view my items in categories
+Because I like being organized
+
+Given that I have multiple categories for my items
+When I ‘sort’ my items by category
+Then it automatically re-arranges the items into tables
+And the ‘table’ icon is highlighted
+
+Additional Info:
+Need icons for ‘Grid’ view, ‘Single List’ view
+
+Title: User should get recommendations based on their ‘To Dos’ - Specific - Movie/TV
+
+As a User
+I want to get recommendations based on the Movie or Show title in my Todo
+Because I want more information about that title or movie
+
+Given I’ve added a movie
+When I look at the item for that movie
+Then a brief synopsis is shown for the movie (with rating)
+And I can click on the synopsis / rating to get more information (externally)
+
+Additional Info:
+Recommendations to come from an API – likely to be IMDB or Rotten Tomatoes or Cineplex (for box office times)
+
+Title: User should get recommendations based on their ‘To Dos’ - Specific – Restaurant
+
+As a User
+I want to get recommendations based on the restaurant in my Todo
+Because I want more information about that restaurant
+
+Given I’ve added a restaurant
+When I look at the item for that restaurant
+Then a rating is shown for that restaurant
+And I can click to ‘Open Table’ to book a time to see that restaurant (if available) Otherwise Google the restaurant
+
+Additional Info:
+Recommendations to come from an API – Yelp
+
+Title: User should get recommendations based on their ‘To Dos’ - Specific – Product
+
+As a User
+I want to get recommendations based on the product in my Todo
+Because I want more information about that  product
+
+Given I’ve added a  product
+When I look at the item for that product
+Then a price & rating is shown for that product
+And I can click to purchase that product via Amazon
+
+Additional Info:
+Product information to come through Amazon API
