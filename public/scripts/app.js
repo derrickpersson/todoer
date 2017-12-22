@@ -1,16 +1,16 @@
 $(() => {
 
-  function createTodo(){
-    return `<li class="list-group-item">
-              <span class="todo-check"><input type="checkbox" class="todo-check"></span>${todo_title}
-              <span class="label label-info">${todo_category}</span>
+  function createTodo(todo){
+    return `<li class="list-group-item" data-todo_id="${todo.id}">
+              <span class="todo-check"><input type="checkbox" class="todo-check"></span>${todo.title}
+              <span class="label label-info">${todo.category}</span>
               <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
             </li>
             `;
   };
 
   function createExpandedTodo(){
-    return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start">
+    return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo_id}">
               <span class="todo-check"><input type="checkbox" class="todo-check"></span>${todo_title}
               <small class="pull-right">${todo_due_date}</small>
               <p class="mb-1">${todo_description}</p>
@@ -23,7 +23,7 @@ $(() => {
 
 
 function createEditableTodo(){
-  return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start">
+  return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo_id}">
             <form>
               <span class="todo-check"><input type="checkbox" class="todo-check"></span>
               <input value="${todo_title}">
@@ -45,12 +45,16 @@ function createEditableTodo(){
 };
 
 function createCompletedTodo(){
-  return `<li class="list-group-item disabled">
+  return `<li class="list-group-item disabled" data-todo_id="${todo_id}">
             <span class="todo-check"><input type="checkbox" class="todo-check" checked></span>${todo_title}
             <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
           </li>
           `;
 }
+
+$('#new-todo').on('submit', function(event){
+
+})
 
 
   $.ajax({
