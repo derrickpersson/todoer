@@ -14,7 +14,7 @@ module.exports = function makeDataHelpers(db){
     },
 
     // Create a new to do when given title
-    createTodos: function(title, userId, cb){
+    createTodo: function(title, userId, cb){
       db('todos').insert({
         title: title,
         user_id: userId
