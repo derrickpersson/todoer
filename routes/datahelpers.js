@@ -22,7 +22,7 @@ module.exports = function makeDataHelpers(db){
         .innerjoin('categories', 'todo_category.category_id', 'categories.id')
     },
     // Update an existing to do
-    updateTodo: function(taskObj, cb){
+    updateTodo: function(taskObj){
       return db('todos').where('id', '=', taskObj.id)
         .update({
           title: taskObj.title,
