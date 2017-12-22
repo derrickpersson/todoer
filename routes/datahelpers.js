@@ -38,6 +38,12 @@ module.exports = function makeDataHelpers(db){
         email: email,
         password: password
       });
+    },
+
+    loginUser: function (email, password) {
+      return db.select('password', 'id').
+                from('users').
+                where('email', email);
     }
     ,
     // Delete a to do

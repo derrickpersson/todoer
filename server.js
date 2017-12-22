@@ -2,18 +2,20 @@
 
 require('dotenv').config();
 
-const PORT        = process.env.PORT || 8080;
-const ENV         = process.env.ENV || "development";
-const express     = require("express");
-const bodyParser  = require("body-parser");
-const sass        = require("node-sass-middleware");
-const app         = express();
+const PORT = process.env.PORT || 8080;
+const ENV = process.env.ENV || "development";
+const express = require("express");
+const bodyParser = require("body-parser");
+const sass = require("node-sass-middleware");
+const app = express();
+const cookieParser  = require('cookie-parser');
+const cookieSession = require('cookie-session');
 
-const knexConfig  = require("./knexfile");
-const knex        = require("knex")(knexConfig[ENV]);
-const morgan      = require('morgan');
-const knexLogger  = require('knex-logger');
-const datahelper  = require('./routes/datahelpers.js')(knex);
+const knexConfig = require("./knexfile");
+const knex = require("knex")(knexConfig[ENV]);
+const morgan = require('morgan');
+const knexLogger = require('knex-logger');
+const datahelper = require('./routes/datahelpers.js')(knex);
 
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
@@ -25,9 +27,27 @@ app.use(morgan('tiny'));
 
 // Log knex SQL queries to STDOUT as well
 app.use(knexLogger(knex));
+//
+app.use(cookieParser());
+app.use(cookieSession({
+  name: 'user_info',
+  keys: [process.env.SESSION_SECRET_KEY || "some secret key"]
+}));
+//
+//locals
+app.use(function (req, res, next) {
+  let session = req.session.user_id;
 
+  next();
+});
+
+
+
+//
 app.set("view engine", "ejs");
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use("/styles", sass({
   src: __dirname + "/styles",
   dest: __dirname + "/public/styles",
@@ -42,18 +62,18 @@ app.use("/api/users", usersRoutes(datahelper));
 //app.use("/users", usersRoutes(knex));
 // Home page
 app.get("/", (req, res) => {
-  res.render("index");
+  return res.render("index");
   // check if user login ?
 });
 
-app.get('/users/new', (req, res) => {
+app.get('/new', (req, res) => {
   return res.render('register');
 })
 
 
-app.post('/users/login', (req, res) => {
+app.get('/login', (req, res) => {
 
-  return res.redirect('/');
+  return res.render('login');
 });
 
 

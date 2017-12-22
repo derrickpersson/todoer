@@ -5,14 +5,15 @@ const router  = express.Router();
 
 module.exports = (datahelper) => {
 
-  // router.get("/", (req, res) => {
-  //   datahelper
-  //     .select("*")
-  //     .from("users")
-  //     .then((results) => {
-  //       res.json(results);
-  //   });
-  // });
+  router.get("/", (req, res) => {
+     // datahelper
+     //   .select("*")
+     //   .from("users")
+     //   .then((results) => {
+     //     res.json(results);
+     // });
+     res.send(200);
+ });
   // GET /users/:uid/todos
   router.get("/:uid/todos", (req,res)  => {
     // select todos where user_id == uid;
@@ -35,13 +36,22 @@ module.exports = (datahelper) => {
       // set sesstion
       res.redirect('/');
     })
-
-    // insert into users db , with email, password
-
-    res.send("create a new user");
   })
 
-  // create a new to DO
+  router.post('/login', (req, res) => {
+    datahelper.loginUser(req.body.email, req.body.password).
+    then((data) => {
+      if (req.body.password === data[0].password) {
+        res.session.user_id = data[0].id;
+        return res.redirect('/');
+      }
+    })
+  });
+
+ router.post('/logout', (req, res) => {
+   res.session.user_id = null;
+   return res.redirect('/');
+ });
 
   router.post('/:uid/todos/new', (req, res) =>{
     // insert into todos with title;
