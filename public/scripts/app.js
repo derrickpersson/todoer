@@ -22,39 +22,57 @@ $(() => {
   };
 
 
-function createEditableTodo(){
-  return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo_id}">
-            <form>
-              <span class="todo-check"><input type="checkbox" class="todo-check"></span>
-              <input value="${todo_title}">
-              <small class="pull-right"><input type="date" value="${todo_due_date}"></small>
-              <p class="mb-1"><textarea class="form-control" rows=3>${todo_description}</textarea></p>
-              <button class="btn btn-primary btn-xs" href="#" value="submit">Save</button>
-              <button class="btn btn-danger btn-xs" href="#" value="cancel">Cancel</button>
-              <span class="pull-right">
-              <select>
-                <option value="Restaurant"> Restaurant</option>
-                <option value="Movie"> Movie</option>
-                <option value="Product">Product</option>
-                <option value="Book">Book </option>
-              </select>
-              </span>
-            </form>
-        </li>
-        `;
-};
-
-function createCompletedTodo(){
-  return `<li class="list-group-item disabled" data-todo_id="${todo_id}">
-            <span class="todo-check"><input type="checkbox" class="todo-check" checked></span>${todo_title}
-            <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
+  function createEditableTodo(){
+    return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo_id}">
+              <form>
+                <span class="todo-check"><input type="checkbox" class="todo-check"></span>
+                <input value="${todo_title}">
+                <small class="pull-right"><input type="date" value="${todo_due_date}"></small>
+                <p class="mb-1"><textarea class="form-control" rows=3>${todo_description}</textarea></p>
+                <button class="btn btn-primary btn-xs" href="#" value="submit">Save</button>
+                <button class="btn btn-danger btn-xs" href="#" value="cancel">Cancel</button>
+                <span class="pull-right">
+                <select>
+                  <option value="Restaurant"> Restaurant</option>
+                  <option value="Movie"> Movie</option>
+                  <option value="Product">Product</option>
+                  <option value="Book">Book </option>
+                </select>
+                </span>
+              </form>
           </li>
           `;
-}
+  };
 
-$('#new-todo').on('submit', function(event){
+  function createCompletedTodo(){
+    return `<li class="list-group-item disabled" data-todo_id="${todo_id}">
+              <span class="todo-check"><input type="checkbox" class="todo-check" checked></span>${todo_title}
+              <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
+            </li>
+            `;
+  }
 
-})
+  function renderTodos(todos){
+    $('#todos-container').empty().html(todos.map(createTodo(todo).reverse()));
+  }
+
+  var userEmail = $('#email').data().event;
+
+
+  function loadTodos(userId){
+    $.ajax({
+      url: `/${userId}/todos`,
+      method: 'GET',
+      datatype: 'json'
+    }).done(function(results){
+      renderTodos(results);
+    })
+  }
+
+  $('#new-todo').on('submit', function(event){
+    $(this).reset();
+    loadTodos(userEmail);
+  })
 
 
   $.ajax({

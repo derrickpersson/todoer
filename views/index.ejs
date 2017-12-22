@@ -22,7 +22,7 @@
         <div class="navbar-header"><a class="navbar-brand" id="logo" href="#"><img src="Images/LogoSample_ByTailorBrands-cropped.png" alt="To do-er Logo"></a>
         </div>
         <div class="container-fluid">
-        <p class="navbar-text navbar-right"> Signed in as [Username] </p>
+        <p class="navbar-text navbar-right" id="email" data-email="<%=email%>"> Signed in as <%=email%> </p>
       </div>
       </div>
     </nav>
@@ -56,7 +56,7 @@
         <div class="col-md-10">
           <h2> To Do: </h2>
           <div class="container-fluid well">
-            <ul class="list-group">
+            <ul class="list-group" id="todos-container">
               <li class="list-group-item">
                 <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do one
                 <span class="label label-info">Movie</span>

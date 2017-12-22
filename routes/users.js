@@ -30,8 +30,8 @@ module.exports = (datahelper) => {
     catch((err) =>{
       console.log(err);
       return res.send(500);
-    })
-  })
+    });
+  });
 
   // //get a registration page;
   // router.get('/new', (req, res) => {
@@ -52,6 +52,7 @@ module.exports = (datahelper) => {
     then((data) => {
       if (req.body.password === data[0].password) {
         res.session.user_id = data[0].id;
+        res.session.email = req.body.email;
         return res.redirect('/');
       }
     })
