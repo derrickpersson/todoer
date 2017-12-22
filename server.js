@@ -34,7 +34,7 @@ app.use(cookieSession({
   keys: [process.env.SESSION_SECRET_KEY || "some secret key"]
 }));
 //
-//locals
+//åålocals
 app.use(function (req, res, next) {
   let session = req.session.user_id;
 

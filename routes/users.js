@@ -3,6 +3,7 @@
 const express = require('express');
 const router  = express.Router();
 
+
 module.exports = (datahelper) => {
 
   router.get("/", (req, res) => {
@@ -15,6 +16,7 @@ module.exports = (datahelper) => {
      res.send(200);
  });
   // GET /users/:uid/todos
+  // CHANGE UID TO USER NAME LATER
   router.get("/:uid/todos", (req,res)  => {
     // select todos where user_id == uid;
     // send to ejs template tp render.
@@ -40,7 +42,7 @@ module.exports = (datahelper) => {
 
   // create a new user;
   router.post('/new', (req, res) => {
-    datahelper.createUser(req.body.emial, req.body.password).
+    datahelper.createUser(req.body.email, req.body.password).
     then(() => {
       // set sesstion
       res.redirect('/');
@@ -50,9 +52,13 @@ module.exports = (datahelper) => {
   router.post('/login', (req, res) => {
     datahelper.loginUser(req.body.email, req.body.password).
     then((data) => {
+      console.log("data 0",data[0]);
       if (req.body.password === data[0].password) {
-        res.session.user_id = data[0].id;
-        res.session.email = req.body.email;
+        console.log(data);
+        console.log(req.body.password);
+        console.log(req.body.email);
+
+        req.session.user_id = data[0].id;
         return res.redirect('/');
       }
     })
