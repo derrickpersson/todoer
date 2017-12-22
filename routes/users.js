@@ -18,10 +18,19 @@ module.exports = (datahelper) => {
   router.get("/:uid/todos", (req,res)  => {
     // select todos where user_id == uid;
     // send to ejs template tp render.
-    datahelper.queryTodos('2', (err, data) => {
+    // datahelper.queryTodos('2', (err, data) => {
+    //   console.log(data);
+    //   res.send(200);
+    // });
+    datahelper.queryTodos(req.session.user_id).
+    then((data) => {
       console.log(data);
-      res.send(200);
-    });
+      return res.json(data);
+    }).
+    catch((err) =>{
+      console.log(err);
+      return res.send(500);
+    })
   })
 
   // //get a registration page;
@@ -54,11 +63,13 @@ module.exports = (datahelper) => {
  });
 
   router.post('/:uid/todos/new', (req, res) =>{
-    // insert into todos with title;
-    datahelper.createTodo(req.body.title, req.param.userid, function(err){
-      console.log('Success');
+    datahelper.createTodo(req.body.title,req.session.user_id).
+    then(() =>{
+      return res.send(200);
+    }).
+    catch((err) => {
+      return res.send(500);
     })
-    res.send("create a new todo is ok")
   });
 
   // update a to do:
@@ -71,11 +82,18 @@ module.exports = (datahelper) => {
       complete: req.body.complete,
       recommendation_request: req.body.recommendation_request
     };
-    datahelper.updateTodo(todo, function(err, data){
-      console.log("Success");
-      // json data -> send back to who called.
+    // datahelper.updateTodo(todo, function(err, data){
+    //   console.log("Success");
+    //   // json data -> send back to who called.
+    // })
+    // res.send("update a todo is ok")
+    datahelper.updateTodo(req.params.tid).
+    then(() => {
+      return res.send(200);
+    }).
+    catch((err) => {
+      return res.send(500);
     })
-    res.send("update a todo is ok")
   })
 
   router.post('/:uid/todos/:tid/delete', (req, res) => {
