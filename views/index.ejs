@@ -2,16 +2,119 @@
 <html lang="en">
   <head>
     <title>Home Page</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
     <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
   </head>
 
   <body>
-    <h1>Hello World!</h1>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header"><a class="navbar-brand" id="logo" href="#"><img src="Images/LogoSample_ByTailorBrands-cropped.png" alt="To do-er Logo"></a>
+        </div>
+        <div class="container-fluid">
+        <p class="navbar-text navbar-right"> Signed in as [Username] </p>
+      </div>
+      </div>
+    </nav>
+    <section>
+        <div class="row">
+          <div class="col-md-3 col-xs-3"></div>
+          <div class="col-md-6 col-xs-6">
+          <h1> Create New Task:</h1>
+<!--           <form class="well">
+            <input name="title" placeholder="Create a new task..">
+            <button>Save</button>
+          </form> -->
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Create a new To do!">
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="button">Save</button>
+                </span>
+              </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+          </div><!-- /.row -->
+        </div>
+        <div class="col-md-3 col-xs-3"></div>
+      </div>
+    </section>
+    <section>
+      <div class="row">
+        <div class="col-md-3 col-xs-3"></div>
+        <div class="col-md-6 col-xs-6">
+          <h1> To Do: </h1>
+          <div class="container-fluid well">
+            <ul class="list-group">
+              <li class="list-group-item">
+                    <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do one
+                <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
+              </li>
+               <li class="list-group-item">
+                    <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do two
+                <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
+              </li>
+               <li class="list-group-item">
+                    <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do three
+                <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
+              </li>
+                  <div class="d-flex w-100 justify-content-between">
+                <li class="list-group-item list-group-item list-group-item-action flex-column align-items-start">
+                    <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do expanded
+                    <small class="pull-right">2018-01-01</small>
+                  <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                  <a class="btn btn-primary btn-xs" href="#" role="button">Edit</a>
+                  <a class="btn btn-warning btn-xs" href="#" role="button">Delete</a>
+                  </div>
+                </li>
+            </ul>
+
+<!--           <article>
+
+         First attempt at the to do:
+              <div class="row">
+              <div class="col-md-4 col-xs-4">
+                <label>
+                  <input type="checkbox"> Here is a To Do
+                </label>
+              </div>
+              <div class="col-md-4 col-xs-4">
+                2018-01-01
+
+              </div>
+               <div class="col-md-4 col-xs-4">
+                <span class="label label-primary">category</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-5 col-xs-5">
+              </div>
+              <div class="col-md-2 col-xs-2">
+                <span class="glyphicon glyphicon-menu-down" aria-hidden="true">
+              </div>
+               <div class="col-md-5 col-xs-5">
+              </div>
+
+            </div>
+          </article> -->
+        </div>
+        </div>
+        <div class="col-md-3 col-xs-3"></div>
+    </section>
+  </body>
+</html>
+
+
   </body>
 </html>
