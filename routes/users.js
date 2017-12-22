@@ -3,8 +3,9 @@
 const express = require('express');
 const router  = express.Router();
 
-module.exports = (knex) => {
 
+module.exports = (knex) => {
+  const dataHelpers = require('./datahelpers.js')(knex);
   router.get("/", (req, res) => {
     knex
       .select("*")
@@ -26,7 +27,14 @@ module.exports = (knex) => {
 
   // create a new user;
   router.post('/new', (req, res) => {
+    dataHelpers.createUser(req.body.emial, req.body.password).
+    then(() => {
+      // set sesstion
+      res.redirect('/');
+    })
+
     // insert into users db , with email, password
+
     res.send("create a new user");
   })
 

@@ -46,8 +46,14 @@ app.get("/", (req, res) => {
 });
 
 app.get('/users/new', (req, res) => {
-  res.send("reg ok!");
+  return res.render('register');
 })
+
+
+app.post('/users/login', (req, res) => {
+
+  return res.redirect('/');
+});
 
 
 // add login route later
