@@ -30,7 +30,14 @@ module.exports = (datahelper) => {
 
   // create a new user;
   router.post('/new', (req, res) => {
+    datahelper.createUser(req.body.emial, req.body.password).
+    then(() => {
+      // set sesstion
+      res.redirect('/');
+    })
+
     // insert into users db , with email, password
+
     res.send("create a new user");
   })
 
