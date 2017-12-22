@@ -27,46 +27,48 @@
       </div>
       </div>
     </nav>
-    <section>
-        <div class="row">
-          <div class="col-md-3 col-xs-3"></div>
-          <div class="col-md-6 col-xs-6">
-          <h2> Create New Task:</h2>
-<!--           <form class="well">
-            <input name="title" placeholder="Create a new task..">
-            <button>Save</button>
-          </form> -->
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Create a new To do!">
-                <span class="input-group-btn">
-                  <button class="btn btn-default" type="button">Save</button>
-                </span>
-              </div><!-- /input-group -->
-            </div><!-- /.col-lg-6 -->
-          </div><!-- /.row -->
+    <section class="container">
+      <h2> Create New Task:</h2>
+      <div class="row">
+        <div class="col-md-10">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Create a new to do!">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">Save</button>
+            </span>
+          </div><!-- /input-group -->
         </div>
-        <div class="col-md-3 col-xs-3"></div>
+        <div class="col-md-2 text-center">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-secondary active">
+              <span class="glyphicon glyphicon-list active" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-secondary">
+              <span class="glyphicon glyphicon-th-large"></span>
+            </button>
+          </div>
+        </div>
       </div>
     </section>
-    <section>
+    <section class="container">
       <div class="row">
-        <div class="col-md-3 col-xs-3"></div>
-        <div class="col-md-6 col-xs-6">
+        <div class="col-md-10">
           <h2> To Do: </h2>
           <div class="container-fluid well">
             <ul class="list-group">
               <li class="list-group-item">
-                    <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do one
+                <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do one
+                <span class="label label-info">Movie</span>
                 <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
               </li>
                <li class="list-group-item">
                     <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do two
+                    <span class="label label-default">Product</span>
                 <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
               </li>
                <li class="list-group-item">
                     <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do three
+                    <span class="label label-success">Book</span>
                 <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
               </li>
                   <div class="d-flex w-100 justify-content-between">
@@ -75,18 +77,37 @@
                     <small class="pull-right">2018-01-01</small>
                   <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
                   <a class="btn btn-primary btn-xs" href="#" role="button">Edit</a>
-                  <a class="btn btn-warning btn-xs" href="#" role="button">Delete</a>
+                  <a class="btn btn-danger btn-xs" href="#" role="button">Delete</a>
+                  <span class="label label-warning pull-right">Restaurant</span>
                   </div>
+                </li>
+                <div class="d-flex w-100 justify-content-between">
+                <li class="list-group-item list-group-item list-group-item-action flex-column align-items-start">
+                  <form>
+                    <span class="todo-check"><input type="checkbox" class="todo-check"></span>
+                    <input value="To do edited">
+                    <small class="pull-right"><input type="date" placeholder="2018-01-01"></small>
+                  <p class="mb-1"><textarea class="form-control" rows=3>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</textarea></p>
+                  <button class="btn btn-primary btn-xs" href="#" value="submit">Save</button>
+                  <button class="btn btn-danger btn-xs" href="#" value="cancel">Cancel</button>
+                  <span class="pull-right">
+                    <select>
+                      <option value="Restaurant" selected> Restaurant</option>
+                      <option value="Movie"> Movie</option>
+                      <option value="Product">Product</option>
+                      <option value="Book">Book </option>
+                    </select>
+                  </span>
+                  </div>
+                </form>
                 </li>
             </ul>
         </div>
         </div>
-        <div class="col-md-3 col-xs-3"></div>
     </section>
-    <section>
+    <section class="container">
       <div class="row">
-        <div class="col-md-3 col-xs-3"></div>
-        <div class="col-md-6 col-xs-6">
+        <div class="col-md-10">
           <h2> Completed: </h2>
           <div class="container-fluid well">
             <ul class="list-group">
@@ -101,7 +122,6 @@
             </ul>
         </div>
         </div>
-        <div class="col-md-3 col-xs-3"></div>
     </section>
   </body>
 </html>
