@@ -42,7 +42,19 @@ module.exports = (datahelper) => {
       catch((err) =>{
         console.log(err);
         return res.send(500);
-      })
+      });
+  });
+
+  //Get a single todo to render
+  router.get('/:uid/todos/:tid', (req, res) => {
+    datahelper.getSingleTodo(req.params.tid)
+      .then((data) =>{
+        return res.json(data);
+      }).
+      catch((err) =>{
+        console.log(err);
+        return res.send(500);
+      });
   });
 
 
@@ -60,7 +72,8 @@ module.exports = (datahelper) => {
     })
   });
 
-  router.post('/:uid', (req, res) => {
+//Login post
+  router.post('/login', (req, res) => {
     datahelper.loginUser(req.body.email, req.body.password).
     then((data) => {
       console.log("data 0",data[0]);

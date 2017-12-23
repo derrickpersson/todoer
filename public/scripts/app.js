@@ -98,6 +98,7 @@ $(() => {
     });
   })
 
+// Complete a todo
   $('#todos-container').on('click', 'input' ,function(event){
     const todo_id = $(this).parent().parent().data().todo_id;
     const todo_li = $(this).parent().parent();
@@ -116,6 +117,40 @@ $(() => {
     }
   })
 
+// Un-complete a todo
+    $('#complete-todos').on('click', 'input' ,function(event){
+    const todo_id = $(this).parent().parent().data().todo_id;
+    const todo_li = $(this).parent().parent();
+    if(!$(this).is(':checked')){
+      $.ajax({
+        url: `/users/${user_id}/todos/${todo_id}`,
+        method: "POST",
+        data: {
+          id: todo_id,
+          complete: false
+        }
+      }).done(function(){
+        loadTodos(user_id);
+        loadCompleteTodos(user_id);
+      })
+    }
+  })
+
+
+// Show details of a todo
+$('#todos-container').on('click', '.btn-primary' ,function(event){
+  event.preventDefault();
+  const todo_id = $(this).parent().data().todo_id;
+  const todo_li = $(this).parent().parent();
+  $.ajax({
+    method:"GET",
+    url: `/users/${user_id}/todos/${todo_id}`,
+    datatype: 'json'
+  }).done(function(data){
+    todo_li.replaceWith(createExpandedTodo(data));
+    // Replace the single li with the new li with details.
+  })
+});
 
   $.ajax({
     method: "GET",

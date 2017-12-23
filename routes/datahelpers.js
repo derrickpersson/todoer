@@ -57,6 +57,11 @@ module.exports = function makeDataHelpers(db){
       return db.select('*').from('todos')
         .where('user_id', '=', userId)
         .andWhere('complete', '=', true)
+    },
+
+    getSingleTodo: function(taskId){
+      return db. select('*').from('todos')
+        .where('id', '=', taskId)
     }
   };
 };
