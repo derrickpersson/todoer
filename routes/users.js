@@ -26,7 +26,6 @@ module.exports = (datahelper) => {
     // });
     datahelper.queryTodos(req.session.user_id).
     then((data) => {
-      console.log(data);
       return res.json(data);
     }).
     catch((err) =>{
@@ -38,7 +37,6 @@ module.exports = (datahelper) => {
   router.get('/:uid/todos/complete', (req, res) => {
     datahelper.getCompleteToDos(req.session.user_id)
       .then((data) =>{
-        console.log(data);
         return res.json(data);
       }).
       catch((err) =>{
@@ -90,32 +88,35 @@ module.exports = (datahelper) => {
     }).
     catch((err) => {
       return res.send(500);
-    })
+    });
   });
 
   // update a to do:
   router.post('/:uid/todos/:tid', (req, res) => {
     // update todo by id.
     let todo = {
+      id: req.body.id,
       title: req.body.title,
       description: req.body.description,
       due_date: req.body.due_date,
-      complete: req.body.complete,
+      complete: req.body.complete || false,
       recommendation_request: req.body.recommendation_request
     };
+    console.log(todo);
     // datahelper.updateTodo(todo, function(err, data){
     //   console.log("Success");
     //   // json data -> send back to who called.
     // })
     // res.send("update a todo is ok")
-    datahelper.updateTodo(req.params.tid).
+    datahelper.updateTodo(todo).
     then(() => {
       return res.send(200);
     }).
     catch((err) => {
+      console.log(err);
       return res.send(500);
-    })
-  })
+    });
+  });
 
   router.post('/:uid/todos/:tid/delete', (req, res) => {
     datahelper.deleteToDo(req.param.todoId, function(err){

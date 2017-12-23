@@ -6,13 +6,15 @@ module.exports = function makeDataHelpers(db){
     queryTodos: function (userid){
       return db.select('*').from('todos')
         .where('user_id', '=', userid)
+        .andWhere('complete', '=', false)
     },
 
     // Create a new to do when given title
     createTodo: function(title, userId){
       return db('todos').insert({
         title: title,
-        user_id: userId
+        user_id: userId,
+        complete: false
       })
     },
     // Get all the categories assigned to a to do

@@ -62,8 +62,6 @@ $(() => {
 
   var user_id = $('#email').data('email');
 
-console.log(user_id);
-
   function loadTodos(userId){
     $.ajax({
       url: `/users/${userId}/todos`,
@@ -76,7 +74,17 @@ console.log(user_id);
 
   loadTodos(user_id);
 
+  function loadCompleteTodos(userId){
+    $.ajax({
+      url: `/users/${userId}/todos/complete`,
+      method: 'GET',
+      datatype: 'json'
+    }).done(function(results){
+      renderCompleteTodos(results);
+    })
+  }
 
+  loadCompleteTodos(user_id);
 
   $('#new-todo').on('submit', function(event){
     event.preventDefault();
@@ -87,12 +95,25 @@ console.log(user_id);
     }).done(function () {
       $(event.target).trigger('reset');
       loadTodos(user_id);
-    })
+    });
+  })
 
-
-
-    //loadTodos(userEmail);
-    //
+  $('#todos-container').on('click', 'input' ,function(event){
+    const todo_id = $(this).parent().parent().data().todo_id;
+    const todo_li = $(this).parent().parent();
+    if($(this).is(':checked')){
+      $.ajax({
+        url: `/users/${user_id}/todos/${todo_id}`,
+        method: "POST",
+        data: {
+          id: todo_id,
+          complete: true
+        }
+      }).done(function(){
+        loadTodos(user_id);
+        loadCompleteTodos(user_id);
+      })
+    }
   })
 
 
