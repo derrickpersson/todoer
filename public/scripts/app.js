@@ -16,8 +16,8 @@ $(() => {
               <span class="label label-info">${todo.category}</span>
               <a class="btn btn-primary btn-xs pull-right" id="hide-details" href="#" role="button">Hide</a>
               <p class="mb-1">${todo.description}</p>
-              <a class="btn btn-primary btn-xs" href="#" role="button">Edit</a>
-              <a class="btn btn-danger btn-xs" href="#" role="button">Delete</a>
+              <a class="btn btn-primary btn-xs" href="#" id="edit" role="button">Edit</a>
+              <a class="btn btn-danger btn-xs" href="#" id="delete" role="button">Delete</a>
               <small class="pull-right">${todo.due_date}</small>
             </li>
             `;
@@ -166,6 +166,20 @@ $('#todos-container').on('click', '#hide-details' ,function(event){
   }).done(function(data){
     // Replace the single li with the new li with details.
     todo_li.replaceWith(createTodo(data[0]));
+  })
+});
+
+// Show details of a todo
+$('#todos-container').on('click', '#delete' ,function(event){
+  event.preventDefault();
+  const todo_id = $(this).parent().data().todo_id;
+  const todo_li = $(this).parent();
+  $.ajax({
+    method:"POST",
+    url: `/users/${user_id}/todos/${todo_id}/delete`,
+  }).done(function(data){
+    todo_li.remove();
+    console.log("Successfully deleted");
   })
 });
 

@@ -94,7 +94,6 @@ module.exports = (datahelper) => {
  });
 
   router.post('/:uid/todos/new', (req, res) =>{
-    console.log(req.body);
     datahelper.createTodo(req.body.title,req.session.user_id).
     then(() =>{
       return res.send(200);
@@ -132,13 +131,12 @@ module.exports = (datahelper) => {
   });
 
   router.post('/:uid/todos/:tid/delete', (req, res) => {
-    datahelper.deleteToDo(req.param.todoId, function(err){
-      if(err){
+    datahelper.deleteToDo(req.params.tid)
+      .then((data) => {
+        return res.send(200)
+      }).catch((err) => {
         throw err;
-      }
-      console.log('Success');
-    })
-    res.send("delete todo is ok")
+      });
   });
   return router;
 }
