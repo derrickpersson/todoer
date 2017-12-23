@@ -70,14 +70,15 @@ $(() => {
   }
 
   $('#new-todo').on('submit', function(event){
-    $(this).reset();
+    event.preventDefault();
     loadTodos(userEmail);
+    // $(this).trigger('reset');
   })
 
 
   $.ajax({
     method: "GET",
-    url: "/api/users"
+    url: "/users"
   }).done((users) => {
     for(user of users) {
       $("<div>").text(user.name).appendTo($("body"));

@@ -49,7 +49,7 @@ module.exports = (datahelper) => {
     })
   })
 
-  router.post('/login', (req, res) => {
+  router.post('/:uid', (req, res) => {
     datahelper.loginUser(req.body.email, req.body.password).
     then((data) => {
       console.log("data 0",data[0]);
@@ -64,12 +64,13 @@ module.exports = (datahelper) => {
     })
   });
 
- router.post('/logout', (req, res) => {
+ router.post('/:uid/logout', (req, res) => {
    res.session.user_id = null;
    return res.redirect('/');
  });
 
   router.post('/:uid/todos/new', (req, res) =>{
+    console.log(req.body);
     datahelper.createTodo(req.body.title,req.session.user_id).
     then(() =>{
       return res.send(200);

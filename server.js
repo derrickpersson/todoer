@@ -34,9 +34,10 @@ app.use(cookieSession({
   keys: [process.env.SESSION_SECRET_KEY || "some secret key"]
 }));
 //
-//åålocals
+//locals
 app.use(function (req, res, next) {
-  let session = req.session.user_id;
+  const session = req.session.user_id;
+  res.locals.user_id = session;
 
   next();
 });
@@ -57,13 +58,16 @@ app.use("/styles", sass({
 app.use(express.static("public"));
 
 // Mount all resource routes
-app.use("/api/users", usersRoutes(datahelper));
+app.use("/users", usersRoutes(datahelper));
 
 //app.use("/users", usersRoutes(knex));
 // Home page
 app.get("/", (req, res) => {
-  return res.render("index");
-  // check if user login ?
+  if(req.session.user_id){
+    return res.render('index');
+  }else{
+    res.redirect('login');
+  }
 });
 
 app.get('/new', (req, res) => {
