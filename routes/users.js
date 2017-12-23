@@ -98,7 +98,6 @@ module.exports = (datahelper) => {
     console.log(req.body);
     let cat = nlp.classifier(req.body.title);
     console.log(cat);
-
     datahelper.createTodo(req.body.title,req.session.user_id).
     then(() =>{
       return res.send(200);
@@ -136,13 +135,12 @@ module.exports = (datahelper) => {
   });
 
   router.post('/:uid/todos/:tid/delete', (req, res) => {
-    datahelper.deleteToDo(req.param.todoId, function(err){
-      if(err){
+    datahelper.deleteToDo(req.params.tid)
+      .then((data) => {
+        return res.send(200)
+      }).catch((err) => {
         throw err;
-      }
-      console.log('Success');
-    })
-    res.send("delete todo is ok")
+      });
   });
   return router;
 }

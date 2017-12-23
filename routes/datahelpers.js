@@ -48,7 +48,7 @@ module.exports = function makeDataHelpers(db){
                 where('email', email);
     },
     // Delete a to do
-    deleteToDo: function(taskId, cb){
+    deleteToDo: function(taskId){
       return db('todos').where('id', '=', taskId)
         .del()
     },
