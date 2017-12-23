@@ -53,15 +53,16 @@ $(() => {
   }
 
   function renderTodos(todos){
-    $('#todos-container').empty().html(todos.map(createTodo(todo).reverse()));
+    $('#todos-container').empty().html(todos.map(createTodo).reverse());
   }
 
-  var userEmail = $('#email').data().event;
+  var user_id = $('#email').data('email');
 
+console.log(user_id);
 
   function loadTodos(userId){
     $.ajax({
-      url: `/${userId}/todos`,
+      url: `/users/${userId}/todos`,
       method: 'GET',
       datatype: 'json'
     }).done(function(results){
@@ -69,10 +70,23 @@ $(() => {
     })
   }
 
+  loadTodos(user_id);
+
   $('#new-todo').on('submit', function(event){
     event.preventDefault();
-    loadTodos(userEmail);
-    // $(this).trigger('reset');
+    $.ajax({
+      url: `/users/${user_id}/todos/new`,
+      method: "POST",
+      data: $('#new-todo').serialize()
+    }).done(function () {
+      $(event.target).trigger('reset');
+      loadTodos(user_id);
+    })
+
+
+
+    //loadTodos(userEmail);
+    //
   })
 
 
