@@ -1,5 +1,4 @@
 $(() => {
-
   function createTodo(todo){
     return `<li class="list-group-item" data-todo_id="${todo.id}">
               <span class="todo-check"><input type="checkbox" class="todo-check"></span>${todo.title}
@@ -54,6 +53,7 @@ $(() => {
             `;
   }
 
+
   function renderTodos(todos){
     $('#todos-container').empty().html(todos.map(createTodo).reverse());
   }
@@ -90,10 +90,23 @@ $(() => {
 
   $('#new-todo').on('submit', function(event){
     event.preventDefault();
+    // console.log($('#new-todo').serialize());
+    let newTodo = $('#new-todo input').val();
+    // console.log(newTodo);
+    // let cat = classifier(newTodo);
+    // console.log('clean',cat);
+
+    let sendData = {
+      title: newTodo
+    };
+
+
+
     $.ajax({
       url: `/users/${user_id}/todos/new`,
       method: "POST",
-      data: $('#new-todo').serialize()
+      //data: $('#new-todo').serialize()
+        data: sendData
     }).done(function () {
       $(event.target).trigger('reset');
       loadTodos(user_id);

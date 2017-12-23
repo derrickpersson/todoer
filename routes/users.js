@@ -2,6 +2,7 @@
 
 const express = require('express');
 const router  = express.Router();
+const nlp = require('./classification.js')();
 
 
 module.exports = (datahelper) => {
@@ -94,6 +95,9 @@ module.exports = (datahelper) => {
  });
 
   router.post('/:uid/todos/new', (req, res) =>{
+    console.log(req.body);
+    let cat = nlp.classifier(req.body.title);
+    console.log(cat);
     datahelper.createTodo(req.body.title,req.session.user_id).
     then(() =>{
       return res.send(200);
