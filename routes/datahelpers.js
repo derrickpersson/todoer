@@ -44,12 +44,17 @@ module.exports = function makeDataHelpers(db){
       return db.select('password', 'id').
                 from('users').
                 where('email', email);
-    }
-    ,
+    },
     // Delete a to do
     deleteToDo: function(taskId, cb){
       return db('todos').where('id', '=', taskId)
         .del()
+    },
+
+    getCompleteToDos: function(userId){
+      return db.select('*').from('todos')
+        .where('user_id', '=', userId)
+        .andWhere('complete', '=', true)
     }
   };
 };

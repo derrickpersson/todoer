@@ -9,26 +9,26 @@ $(() => {
             `;
   };
 
-  function createExpandedTodo(){
-    return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo_id}">
-              <span class="todo-check"><input type="checkbox" class="todo-check"></span>${todo_title}
-              <small class="pull-right">${todo_due_date}</small>
-              <p class="mb-1">${todo_description}</p>
+  function createExpandedTodo(todo){
+    return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo.id}">
+              <span class="todo-check"><input type="checkbox" class="todo-check"></span>${todo.title}
+              <small class="pull-right">${todo.due_date}</small>
+              <p class="mb-1">${todo.description}</p>
               <a class="btn btn-primary btn-xs" href="#" role="button">Edit</a>
               <a class="btn btn-danger btn-xs" href="#" role="button">Delete</a>
-              <span class="label label-warning pull-right">${todo_category}</span>
+              <span class="label label-warning pull-right">${todo.category}</span>
             </li>
             `;
   };
 
 
-  function createEditableTodo(){
-    return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo_id}">
+  function createEditableTodo(todo){
+    return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo.id}">
               <form>
                 <span class="todo-check"><input type="checkbox" class="todo-check"></span>
-                <input value="${todo_title}">
-                <small class="pull-right"><input type="date" value="${todo_due_date}"></small>
-                <p class="mb-1"><textarea class="form-control" rows=3>${todo_description}</textarea></p>
+                <input value="${todo.title}">
+                <small class="pull-right"><input type="date" value="${todo.due_date}"></small>
+                <p class="mb-1"><textarea class="form-control" rows=3>${todo.description}</textarea></p>
                 <button class="btn btn-primary btn-xs" href="#" value="submit">Save</button>
                 <button class="btn btn-danger btn-xs" href="#" value="cancel">Cancel</button>
                 <span class="pull-right">
@@ -44,9 +44,9 @@ $(() => {
           `;
   };
 
-  function createCompletedTodo(){
-    return `<li class="list-group-item disabled" data-todo_id="${todo_id}">
-              <span class="todo-check"><input type="checkbox" class="todo-check" checked></span>${todo_title}
+  function createCompletedTodo(todo){
+    return `<li class="list-group-item disabled" data-todo_id="${todo.id}">
+              <span class="todo-check"><input type="checkbox" class="todo-check" checked></span>${todo.title}
               <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
             </li>
             `;
@@ -54,6 +54,10 @@ $(() => {
 
   function renderTodos(todos){
     $('#todos-container').empty().html(todos.map(createTodo).reverse());
+  }
+
+  function renderCompleteTodos(todos){
+    $('#complete-todos').empty().html(todos.map(createCompletedTodo).reverse());
   }
 
   var user_id = $('#email').data('email');
@@ -71,6 +75,8 @@ console.log(user_id);
   }
 
   loadTodos(user_id);
+
+
 
   $('#new-todo').on('submit', function(event){
     event.preventDefault();

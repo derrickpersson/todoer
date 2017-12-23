@@ -35,6 +35,19 @@ module.exports = (datahelper) => {
     });
   });
 
+  router.get('/:uid/todos/complete', (req, res) => {
+    datahelper.getCompleteToDos(req.session.user_id)
+      .then((data) =>{
+        console.log(data);
+        return res.json(data);
+      }).
+      catch((err) =>{
+        console.log(err);
+        return res.send(500);
+      })
+  });
+
+
   // //get a registration page;
   // router.get('/new', (req, res) => {
   //   res.send("new reg form");
@@ -47,7 +60,7 @@ module.exports = (datahelper) => {
       // set sesstion
       res.redirect('/');
     })
-  })
+  });
 
   router.post('/:uid', (req, res) => {
     datahelper.loginUser(req.body.email, req.body.password).
