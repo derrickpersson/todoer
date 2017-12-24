@@ -170,7 +170,8 @@ $(() => {
       datatype: 'json'
     }).done(function(data){
       // Replace the single li with the new li with details.
-      todo_li.replaceWith(createExpandedTodo(data[0]));
+      console.log(data);
+      //todo_li.replaceWith(createExpandedTodo(data[0]));
     })
   });
 

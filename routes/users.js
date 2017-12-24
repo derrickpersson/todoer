@@ -49,14 +49,22 @@ module.exports = (datahelper) => {
 
   //Get a single todo to render
   router.get('/:uid/todos/:tid', (req, res) => {
-    datahelper.getSingleTodo(req.params.tid)
-      .then((data) =>{
-        return res.json(data);
-      }).
-      catch((err) =>{
-        console.log(err);
-        return res.send(500);
-      });
+    // datahelper.getSingleTodo(req.params.tid)
+    //   .then((data) =>{
+    //     return res.json(data);
+    //   }).
+    //   catch((err) =>{
+    //     console.log(err);
+    //     return res.send(500);
+    //   });
+    yelp.searchByname(req.params.tid).
+    then((data) => {
+      res.json(data);
+    }).
+    catch((err) => {
+      res.send(500);
+    })
+
   });
 
 

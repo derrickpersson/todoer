@@ -1,6 +1,9 @@
+const ENV = process.env.ENV || "development";
+const knexConfig = require("../knexfile");
+const knex = require("knex")(knexConfig[ENV]);
 var Yelp = require('yelp-v3');
 var yelp = new Yelp({
-  access_token: "Ly8AE__VAU9P5AvlbBIh6Dw15iBeLQPftWgebNJV5nR8La-VTW6XXw2yYtKeCFuTf4vEkDsFR8RRPfa6LaIXktBs7Tx7wk69CYZ7Tv1N4weMC7Uz-YYcHTq4dkQ7WnYx"
+  access_token: "C754GEkrRe3MZjVrE-34g8wOlDoOZtZMcyJk6FWocqvw5swD3h0bF3Dv7VAQOaZkwGnPVxOonrXvbJ-yPV_QSwLAa3jHrBlnZc5624aAzGay_UNuVE-lNWPWyGA_WnYx"
 });
 
 module.exports = () => {
@@ -11,11 +14,14 @@ module.exports = () => {
         from('todos').
         where('id', todoID).
         then((name) => {
+          console.log("serach for ", name[0].recommendation_request);
           yelp.search({
-            term: name,
+            term: name[0].recommendation_request,
             location: 'vancouver'
           }, (err, data) => {
+            console.log(data);
             if (err) reject(err)
+            //console.log("yelp data", data);
             resolve(data["businesses"][0]);
           })
         }).
