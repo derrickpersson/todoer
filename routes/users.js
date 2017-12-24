@@ -3,6 +3,7 @@
 const express = require('express');
 const router  = express.Router();
 const nlp = require('./classification.js')();
+const yelp = require('./yelpHelper.js')();
 
 
 module.exports = (datahelper) => {
@@ -87,6 +88,7 @@ module.exports = (datahelper) => {
         return res.redirect('/');
       }
     })
+    //catch err
   });
 
  router.post('/:uid/logout', (req, res) => {
@@ -99,7 +101,7 @@ module.exports = (datahelper) => {
     let cat = nlp.classifier(req.body.title);
     console.log(cat);
 
-    datahelper.createTodo(req.body.title,req.session.user_id).
+    datahelper.createTodo(req.body.title,req.session.user_id, cat.action, cat.target).
     then(() =>{
       return res.send(200);
     }).
@@ -144,5 +146,12 @@ module.exports = (datahelper) => {
     })
     res.send("delete todo is ok")
   });
+
+  router.get('/todos/details/:tid', (req, res) => {
+    let data = yelp.searchByname(req.params.tid);
+    res.json(data);
+  })
+
+
   return router;
 }

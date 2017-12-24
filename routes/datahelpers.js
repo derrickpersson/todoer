@@ -10,11 +10,13 @@ module.exports = function makeDataHelpers(db){
     },
 
     // Create a new to do when given title
-    createTodo: function(title, userId){
+    createTodo: function(title, userId,category, destination){
       return db('todos').insert({
         title: title,
         user_id: userId,
-        complete: false
+        category: category,
+        complete: false,
+        recommendation_request: destination
       })
     },
     // Get all the categories assigned to a to do

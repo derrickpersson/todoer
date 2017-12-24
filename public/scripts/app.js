@@ -132,6 +132,9 @@ $(() => {
     }
   })
 
+
+
+
 // Un-complete a todo
     $('#complete-todos').on('click', 'input' ,function(event){
     const todo_id = $(this).parent().parent().data().todo_id;
