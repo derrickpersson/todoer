@@ -7,8 +7,25 @@ let eat = [
   'eat',
   'grab',
   'food',
-  'meet'
+  'meet',
+  'breakfast'
 ];
+
+let watch = [
+  'watch',
+  'see',
+  'attend',
+  'catch',
+  'cinema',
+  'film',
+  'movie',
+
+]
+
+let read = [
+  'read',
+  ''
+]
 
 module.exports = () => {
   return {
@@ -22,6 +39,28 @@ module.exports = () => {
       let action_index;
       clean.forEach((word, index) => {
         if (eat.indexOf(word) != -1) {
+          obj.action = 'restaurant';
+          action_index = index;
+        }
+      })
+      clean.forEach((w, i) => {
+        if (i != action_index && i > action_index) {
+          target += w + ' ';
+        }
+      })
+      obj.target = target.trim();
+      return obj;
+    },
+    classifier_movie: (data) => {
+      let clean = [];
+      let obj = {};
+      data.toLowerCase().split(' ').forEach((word) => {
+        if (stopwords.indexOf(word) == -1) clean.push(word)
+      });
+      let target = "";
+      let action_index;
+      clean.forEach((word, index) => {
+        if (watch.indexOf(word) != -1) {
           obj.action = 'restaurant';
           action_index = index;
         }
