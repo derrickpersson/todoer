@@ -53,6 +53,7 @@ $(() => {
   function createCompletedTodo(todo){
     return `<li class="list-group-item disabled" data-todo_id="${todo.id}">
               <span class="todo-check"><input type="checkbox" class="todo-check" checked></span>${todo.title}
+              <span class="label label-info">${todo.category}</span>
               <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
             </li>
             `;
@@ -215,16 +216,17 @@ $(() => {
   });
 
   // Update todo with new info
-  $('#todo-edit').on('submit', function(event){
+  $('#todos-container').on('submit', '#todo-edit', function(event){
+    console.log('test');
     event.preventDefault();
     const todo_id = $(this).parent().data().todo_id;
     const todo_li = $(this).parent();
     let sendData = {
       id: todo_id,
-      title: $('#title').val(),
-      due_date: $('#due_date').val(),
-      description: $('#description').val(),
-      category: $('#category').val()
+      title: $('#title').val() || null,
+      due_date: $('#due_date').val() || null,
+      description: $('#description').val() || null,
+      category: $('#category').val() || null
     };
     console.log(sendData);
     $.ajax({

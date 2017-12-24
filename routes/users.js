@@ -116,7 +116,8 @@ module.exports = (datahelper) => {
       description: req.body.description,
       due_date: req.body.due_date,
       complete: req.body.complete || false,
-      recommendation_request: req.body.recommendation_request
+      recommendation_request: req.body.recommendation_request,
+      category: req.body.category
     };
     console.log(todo);
     // datahelper.updateTodo(todo, function(err, data){
