@@ -119,7 +119,8 @@ module.exports = (datahelper) => {
       description: req.body.description,
       due_date: req.body.due_date,
       complete: req.body.complete || false,
-      recommendation_request: req.body.recommendation_request
+      recommendation_request: req.body.recommendation_request,
+      category: req.body.category
     };
     console.log(todo);
     // datahelper.updateTodo(todo, function(err, data){
@@ -138,13 +139,12 @@ module.exports = (datahelper) => {
   });
 
   router.post('/:uid/todos/:tid/delete', (req, res) => {
-    datahelper.deleteToDo(req.param.todoId, function(err){
-      if(err){
+    datahelper.deleteToDo(req.params.tid)
+      .then((data) => {
+        return res.send(200)
+      }).catch((err) => {
         throw err;
-      }
-      console.log('Success');
-    })
-    res.send("delete todo is ok")
+      });
   });
 
   router.get('/todos/details/:tid', (req, res) => {

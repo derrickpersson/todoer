@@ -34,6 +34,7 @@ module.exports = function makeDataHelpers(db){
           due_date: taskObj.due_date,
           complete: taskObj.complete,
           recommendation_request: taskObj.recommendation_request,
+          category: taskObj.category
           // user_id: taskObj.userId
         })
     },
@@ -50,7 +51,7 @@ module.exports = function makeDataHelpers(db){
                 where('email', email);
     },
     // Delete a to do
-    deleteToDo: function(taskId, cb){
+    deleteToDo: function(taskId){
       return db('todos').where('id', '=', taskId)
         .del()
     },
