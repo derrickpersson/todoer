@@ -3,7 +3,7 @@ const knexConfig = require("../knexfile");
 const knex = require("knex")(knexConfig[ENV]);
 var Yelp = require('yelp-v3');
 var yelp = new Yelp({
-  access_token: "C754GEkrRe3MZjVrE-34g8wOlDoOZtZMcyJk6FWocqvw5swD3h0bF3Dv7VAQOaZkwGnPVxOonrXvbJ-yPV_QSwLAa3jHrBlnZc5624aAzGay_UNuVE-lNWPWyGA_WnYx"
+  access_token: "API"
 });
 
 module.exports = () => {
