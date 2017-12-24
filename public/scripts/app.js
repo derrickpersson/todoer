@@ -220,18 +220,17 @@ $(() => {
 
   // Update todo with new info
   $('#todos-container').on('submit', '#todo-edit', function(event){
-    console.log('test');
     event.preventDefault();
     const todo_id = $(this).parent().data().todo_id;
     const todo_li = $(this).parent();
     let sendData = {
       id: todo_id,
       title: $('#title').val() || null,
+      // ERROR!! This breaks when we don't have a date value. How do we fix it?
       due_date: $('#due_date').val() || null,
       description: $('#description').val() || null,
       category: $('#category').val() || null
     };
-    console.log(sendData);
     $.ajax({
       method: "POST",
       url: `/users/${user_id}/todos/${todo_id}`,
@@ -248,4 +247,33 @@ $(() => {
     })
   });
 
+// This doesn't work yet. FIX! ERROR!
+  $('#todos-container').on('cancel', '#todo-edit', function(event){
+    event.preventDefault();
+    const todo_id = $(this).parent().data().todo_id;
+    const todo_li = $(this).parent();
+    $.ajax({
+      method:"GET",
+      url: `/users/${user_id}/todos/${todo_id}`,
+      datatype: 'json'
+    }).done(function(data){
+      // Replace the single li with the new li with details.
+      todo_li.replaceWith(createExpandedTodo(data[0]));
+    });
+  });
+
+
 });
+
+// Bugs note:
+// Fix date format, bottom right hand corner
+// Fix username display name
+//    Fix user_id into sessions
+// Fix cancel button
+// Fix being able to submit to do update without date fields (i.e. with null values)
+
+
+// TODO:
+// Add in 3 different sections to display in details section.
+// Add in classifiers for all 4 categories
+//  Classifier optimization
