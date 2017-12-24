@@ -1,5 +1,3 @@
-
-
 module.exports = function makeDataHelpers(db){
   return {
     // Get a list of all the todos for a given user ID
