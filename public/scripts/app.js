@@ -16,6 +16,13 @@ $(() => {
       return item;
   };
 
+  function dateChecker(date){
+    if(date === 'Invalid date'){
+      return "";
+    }
+    return date;
+  }
+
   function createExpandedTodo(todo){
     return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo.id}">
               <span class="todo-check"><input type="checkbox" class="todo-check"></span>${todo.title}
@@ -24,7 +31,7 @@ $(() => {
               <p class="mb-1">${blankIfNull(todo.description)}</p>
               <a class="btn btn-primary btn-xs" href="#" id="edit" role="button">Edit</a>
               <a class="btn btn-danger btn-xs" href="#" id="delete" role="button">Delete</a>
-              <small class="pull-right">${blankIfNull(todo.due_date)}</small>
+              <small class="pull-right">Due Date:  ${dateChecker(moment(blankIfNull(todo.due_date)).format('MM / DD / YYYY'))}</small>
             </li>
             `;
   };
@@ -44,7 +51,7 @@ $(() => {
                 <p class="mb-1"><textarea id="description" name="description" class="form-control" rows=3>${blankIfNull(todo.description)}</textarea></p>
                 <button class="btn btn-primary btn-xs" href="#" id="save" value="submit">Save</button>
                 <button class="btn btn-danger btn-xs" href="#" id="cancel" value="cancel">Cancel</button>
-                <small class="pull-right"><input id="due_date" name="due_date" type="date" value="${blankIfNull(todo.due_date)}"></small>
+                <small class="pull-right">Due Date:  <input id="due_date" name="due_date" type="date" value="${moment(blankIfNull(todo.due_date)).format('YYYY-MM-DD')}"></small>
               </form>
           </li>
           `;
@@ -136,11 +143,8 @@ $(() => {
     }
   })
 
-
-
-
-// Un-complete a todo
-    $('#complete-todos').on('click', 'input' ,function(event){
+  // Un-complete a todo
+  $('#complete-todos').on('click', 'input' ,function(event){
     const todo_id = $(this).parent().parent().data().todo_id;
     const todo_li = $(this).parent().parent();
     if(!$(this).is(':checked')){
@@ -226,11 +230,14 @@ $(() => {
     let sendData = {
       id: todo_id,
       title: $('#title').val() || null,
-      // ERROR!! This breaks when we don't have a date value. How do we fix it?
-      due_date: $('#due_date').val() || null,
       description: $('#description').val() || null,
       category: $('#category').val() || null
     };
+
+    if(dateChecker(moment($('#due_date').val()).format('YYYY-MM-DD'))){
+      sendData.due_date = moment($('#due_date').val()).format('YYYY-MM-DD');
+    };
+
     $.ajax({
       method: "POST",
       url: `/users/${user_id}/todos/${todo_id}`,
@@ -248,10 +255,10 @@ $(() => {
   });
 
 // This doesn't work yet. FIX! ERROR!
-  $('#todos-container').on('cancel', '#todo-edit', function(event){
+  $('#todos-container').on('click', '#cancel', function(event){
     event.preventDefault();
-    const todo_id = $(this).parent().data().todo_id;
-    const todo_li = $(this).parent();
+    const todo_id = $(this).parent().parent().data().todo_id;
+    const todo_li = $(this).parent().parent();
     $.ajax({
       method:"GET",
       url: `/users/${user_id}/todos/${todo_id}`,
@@ -266,11 +273,8 @@ $(() => {
 });
 
 // Bugs note:
-// Fix date format, bottom right hand corner
 // Fix username display name
 //    Fix user_id into sessions
-// Fix cancel button
-// Fix being able to submit to do update without date fields (i.e. with null values)
 
 
 // TODO:
