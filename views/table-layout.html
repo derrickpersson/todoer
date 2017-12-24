@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Home Page</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+    <script type="text/javascript" src="/scripts/app.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+
+    <!-- Moment JS -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.4/moment.js"></script>
+
+  </head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header"><a class="navbar-brand" id="logo" href="#"><img src="Images/LogoSample_ByTailorBrands-cropped.png" alt="To do-er Logo"></a>
+        </div>
+        <div class="container-fluid">
+        <p class="navbar-text navbar-right" id="email" data-email="<%=user_id%>"> Signed in as <%=user_id%> </p>
+      </div>
+      </div>
+    </nav>
+    <section class="container">
+      <h2> Create New Task:</h2>
+      <div class="row">
+        <div class="col-md-10">
+          <form action="/users/<%=user_id%>/todos/new" method="post" id="new-todo">
+            <div class="input-group">
+              <input type="text" name="title" class="form-control" placeholder="Create a new to do!">
+              <span class="input-group-btn">
+               <button class="btn btn-default" type="submit">Save</button>
+              </span>
+            </div><!-- /input-group -->
+          </form>
+        </div>
+        <div class="col-md-2 text-center">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-secondary active">
+              <span class="glyphicon glyphicon-list active" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-secondary">
+              <span class="glyphicon glyphicon-th-large"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="container">
+      <div class="row">
+        <div class="col-md-10">
+          <h2> To Do: </h2>
+          <div class="container-fluid well">
+            <div class="row">
+              <div class="col-md-6">
+                <h2>Movies:</h2>
+                <ul class="list-group" id="todos-container">
+                  <li class="list-group-item">
+                    <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do one
+                    <span class="label label-info">Movie</span>
+                    <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
+                  </li>
+                   <li class="list-group-item">
+                      <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do two
+                      <span class="label label-info">Movie</span>
+                    <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
+                  </li>
+                   <li class="list-group-item">
+                    <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do three
+                    <span class="label label-info">Movie</span>
+                    <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h2>Products:</h2>
+                <ul class="list-group" id="todos-container">
+                  <li class="list-group-item">
+                    <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do one
+                    <span class="label label-default">Product</span>
+                    <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
+                  </li>
+                   <li class="list-group-item">
+                      <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do two
+                      <span class="label label-default">Product</span>
+                    <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
+                  </li>
+                   <li class="list-group-item">
+                    <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do three
+                    <span class="label label-default">Product</span>
+                    <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <h2>Books:</h2>
+                <ul class="list-group" id="todos-container">
+                  <li class="list-group-item">
+                    <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do one
+                    <span class="label label-success">Books</span>
+                    <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
+                  </li>
+                   <li class="list-group-item">
+                      <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do two
+                      <span class="label label-success">Books</span>
+                    <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
+                  </li>
+                   <li class="list-group-item">
+                    <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do three
+                    <span class="label label-success">Books</span>
+                    <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h2>Restaurants:</h2>
+                <ul class="list-group" id="todos-container">
+                  <li class="list-group-item">
+                    <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do one
+                    <span class="label label-warning">Restaurants</span>
+                    <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
+                  </li>
+                   <li class="list-group-item">
+                      <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do two
+                      <span class="label label-warning">Restaurants</span>
+                    <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
+                  </li>
+                   <li class="list-group-item">
+                    <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do three
+                    <span class="label label-warning">Restaurants</span>
+                    <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+        </div>
+        </div>
+    </section>
+    <section class="container">
+      <div class="row">
+        <div class="col-md-10">
+          <h2> Completed: </h2>
+          <div class="container-fluid well">
+            <ul class="list-group" id="complete-todos">
+              <li class="list-group-item disabled">
+                <span class="todo-check"><input type="checkbox" class="todo-check" checked></span>Done one
+                <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
+              </li>
+              <li class="list-group-item disabled">
+                <span class="todo-check"><input type="checkbox" class="todo-check" checked></span>Done two
+                <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
+              </li>
+            </ul>
+        </div>
+        </div>
+    </section>
+  </body>
+</html>
