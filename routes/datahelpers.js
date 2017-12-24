@@ -32,6 +32,7 @@ module.exports = function makeDataHelpers(db){
           due_date: taskObj.due_date,
           complete: taskObj.complete,
           recommendation_request: taskObj.recommendation_request,
+          category: taskObj.category
           // user_id: taskObj.userId
         })
     },
