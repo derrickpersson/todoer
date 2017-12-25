@@ -58,7 +58,7 @@ module.exports = (datahelper) => {
     //     console.log(err);
     //     return res.send(500);
     //   });
-    yelp.searchByname(req.params.tid).
+    yelp.randomSearchByname(req.params.tid).
     then((data) => {
       res.json(data);
     }).
