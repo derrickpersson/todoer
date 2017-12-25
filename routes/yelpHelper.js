@@ -71,8 +71,8 @@ var randomSearch = (itemStr) => {
     });
     let result = transformed.join(' ');
     console.log("new forward input", result);
-    if (data != null) return Promise.resolve(data);
-    else return randomSearch(result);
+    if (transformed.length == 0 || data != null) return Promise.resolve(data);
+    else if (transformed.length != 0) return randomSearch(result);
   })
 };
 
