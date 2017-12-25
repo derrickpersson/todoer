@@ -23,17 +23,31 @@ $(() => {
   };
 
   function createExpandedTodo(todo){
-    return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo.id}">
-              <span class="todo-check"><input type="checkbox" class="todo-check"></span>${todo.title}
-              <span class="label label-info">${todo.category}</span>
+    return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo.dbData.id}">
+              <span class="todo-check"><input type="checkbox" class="todo-check"></span>${todo.dbData.title}
+              <span class="label label-info">${todo.dbData.category}</span>
+              <p class="font-weight-light">Name: ${todo.apiData.name}</p>
+              <p class="font-weight-light">Rating: ${todo.apiData.rating}</p>
+              <p class="font-weight-light">Address: ${todo.apiData.location.address1}</p>
+              <p class="font-weight-light">Phone: ${todo.apiData.display_phone}</p>
               <a class="btn btn-primary btn-xs pull-right" id="hide-details" href="#" role="button">Hide</a>
-              <p class="mb-1">${blankIfNull(todo.description)}</p>
+              <p class="mb-1">${blankIfNull(null)}</p>
               <a class="btn btn-primary btn-xs" href="#" id="edit" role="button">Edit</a>
               <a class="btn btn-danger btn-xs" href="#" id="delete" role="button">Delete</a>
-              <small class="pull-right">Due Date:  ${dateChecker(moment(blankIfNull(todo.due_date)).format('MM / DD / YYYY'))}</small>
+              <small class="pull-right">Due Date:  ${dateChecker(moment(blankIfNull(todo.dbData.due_date)).format('MM / DD / YYYY'))}</small>
             </li>
             `;
   };
+
+// function foodDetails(apiData) {
+//   return `
+//     <li class="list-group-item">Name: ${apiData.name}</li>
+//     <li class="list-group-item">Rating: ${apiData.rating}</li>
+//     <li class="list-group-item">Address: ${apiData.location.address1}</li>
+//     <li class="list-group-item">Phone: ${apiData.display_phone}</li>
+//   `;
+// }
+
 
 
   function createEditableTodo(todo){
@@ -277,7 +291,7 @@ $(() => {
     }).done(function(data){
       // Replace the single li with the new li with details.
       console.log(data);
-      //todo_li.replaceWith(createExpandedTodo(data[0]));
+      todo_li.replaceWith(createExpandedTodo(data));
     })
   });
 
@@ -292,7 +306,7 @@ $(() => {
       datatype: 'json'
     }).done(function(data){
       // Replace the single li with the new li with details.
-      todo_li.replaceWith(createTodo(data[0]));
+      todo_li.replaceWith(createTodo(data.dbData));
     })
   });
 

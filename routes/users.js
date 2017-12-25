@@ -58,9 +58,18 @@ module.exports = (datahelper) => {
     //     console.log(err);
     //     return res.send(500);
     //   });
+
+    // get data from yelp
     yelp.randomSearchByname(req.params.tid).
-    then((data) => {
-      res.json(data);
+    then((apiData) => {
+      // data from our db;
+      datahelper.getSingleTodo(req.params.tid).
+      then((dbData) => {
+        let data = {};
+        data.dbData = dbData[0];
+        data.apiData = apiData;
+        res.json(data);
+      })
     }).
     catch((err) => {
       res.send(500);
