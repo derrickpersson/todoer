@@ -26,6 +26,7 @@
     "morgan": "^1.7.0",
     "node-sass-middleware": "^0.9.8",
     "pg": "^6.0.2",
+    "progressbar.js": "^1.0.1",
     "yelp-v3": "0.0.6"
   },
   "devDependencies": {

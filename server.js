@@ -38,7 +38,6 @@ app.use(cookieSession({
 app.use(function (req, res, next) {
   const session = req.session.user_id;
   res.locals.user_id = session;
-
   next();
 });
 

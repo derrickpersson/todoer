@@ -50,15 +50,6 @@ module.exports = (datahelper) => {
 
   //Get a single todo to render
   router.get('/:uid/todos/:tid', (req, res) => {
-    // datahelper.getSingleTodo(req.params.tid)
-    //   .then((data) =>{
-    //     return res.json(data);
-    //   }).
-    //   catch((err) =>{
-    //     console.log(err);
-    //     return res.send(500);
-    //   });
-
     // get data from yelp
     yelp.randomSearchByname(req.params.tid).
     then((apiData) => {
@@ -74,7 +65,18 @@ module.exports = (datahelper) => {
     catch((err) => {
       res.send(500);
     })
+  });
 
+  router.get('/:uid/todos/db/:tid', (req, res) => {
+    console.log("req todo id", req.params.tid);
+    datahelper.getSingleTodo(req.params.tid).
+    then((data) => {
+      console.log(data);
+      res.json(data[0]);
+    }).
+    catch((err) => {
+      res.send(500);
+    })
   });
 
 

@@ -6,6 +6,8 @@ $(() => {
       return item;
   };
 
+
+
   function dateChecker(date){
     if(date === 'Invalid date'){
       return "";
@@ -113,7 +115,9 @@ $(() => {
            `
   }
 
-
+function bar() {
+   return `<img id="lodaing" src="./Images/loading.gif">`;
+};
 
   function renderTodos(todos){
     $('#todos-container').empty().html(todos.map(createTodo).reverse());
@@ -141,7 +145,8 @@ $(() => {
     $('#complete-todos').empty().html(todos.map(createCompletedTodo).reverse());
   };
 
-  var user_id = $('#userId').data('userId');
+  var user_id = $('#userId').data().userid;
+  console.log("current user", user_id);
   let view_state = "List";
 
   function loadTodos(userId){
@@ -284,6 +289,7 @@ $(() => {
     event.preventDefault();
     const todo_id = $(this).parent().data().todo_id;
     const todo_li = $(this).parent();
+    todo_li.replaceWith(bar());
     $.ajax({
       method:"GET",
       url: `/users/${user_id}/todos/${todo_id}`,
@@ -291,7 +297,7 @@ $(() => {
     }).done(function(data){
       // Replace the single li with the new li with details.
       console.log(data);
-      todo_li.replaceWith(createExpandedTodo(data));
+      $('#lodaing').replaceWith(createExpandedTodo(data));
     })
   });
 
@@ -302,11 +308,11 @@ $(() => {
     const todo_li = $(this).parent();
     $.ajax({
       method:"GET",
-      url: `/users/${user_id}/todos/${todo_id}`,
+      url: `/users/${user_id}/todos/db/${todo_id}`,
       datatype: 'json'
     }).done(function(data){
       // Replace the single li with the new li with details.
-      todo_li.replaceWith(createTodo(data.dbData));
+      todo_li.replaceWith(createTodo(data));
     })
   });
 
