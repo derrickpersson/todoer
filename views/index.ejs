@@ -26,7 +26,7 @@
         <div class="navbar-header"><a class="navbar-brand" id="logo" href="#"><img src="Images/LogoSample_ByTailorBrands-cropped.png" alt="To do-er Logo"></a>
         </div>
         <div class="container-fluid">
-        <p class="navbar-text navbar-right" id="email" data-email="<%=user_id%>"> Signed in as <%=user_id%> </p>
+        <p class="navbar-text navbar-right" id="userId" data-userId="<%=user_id%>"> Signed in as <%=user_id%> </p>
       </div>
       </div>
     </nav>
@@ -45,10 +45,10 @@
         </div>
         <div class="col-md-2 text-center">
           <div class="btn-group" role="group">
-            <button type="button" class="btn btn-secondary active">
+            <button type="button" class="btn btn-secondary active" id="list-view">
               <span class="glyphicon glyphicon-list active" aria-hidden="true"></span>
             </button>
-            <button type="button" class="btn btn-secondary">
+            <button type="button" class="btn btn-secondary" id="table-view">
               <span class="glyphicon glyphicon-th-large"></span>
             </button>
           </div>
@@ -59,7 +59,7 @@
       <div class="row">
         <div class="col-md-10">
           <h2> To Do: </h2>
-          <div class="container-fluid well">
+          <div class="container-fluid well" id="todos-container-container">
             <ul class="list-group" id="todos-container">
               <li class="list-group-item">
                 <span class="todo-check"><input type="checkbox" class="todo-check"></span>To do one

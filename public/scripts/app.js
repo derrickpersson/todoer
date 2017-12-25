@@ -1,14 +1,4 @@
 $(() => {
-  function createTodo(todo){
-    return `<li class="list-group-item" data-todo_id="${todo.id}">
-              <span class="todo-check"><input type="checkbox" class="todo-check"></span>${todo.title}
-              <span class="label label-info">${todo.category}</span>
-              <a class="btn btn-primary btn-xs pull-right" id="show-details" href="#" role="button">Details</a>
-            </li>
-            `;
-  };
-
-
   function blankIfNull(item){
     if(item === null){
       return "";
@@ -22,6 +12,15 @@ $(() => {
     }
     return date;
   }
+
+  function createTodo(todo){
+    return `<li class="list-group-item" data-todo_id="${todo.id}">
+              <span class="todo-check"><input type="checkbox" class="todo-check"></span>${todo.title}
+              <span class="label label-info">${todo.category}</span>
+              <a class="btn btn-primary btn-xs pull-right" id="show-details" href="#" role="button">Details</a>
+            </li>
+            `;
+  };
 
   function createExpandedTodo(todo){
     return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo.id}">
@@ -66,16 +65,70 @@ $(() => {
             `;
   };
 
+  function createTableLayout(){
+    return `<div class="row">
+              <div class="col-md-6">
+                <h2> Movies: </h2>
+                <ul class="list-group" id="Movie">
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h2> Books: </h2>
+                <ul class="list-group" id="Book">
+                </ul>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <h2> Products: </h2>
+                <ul class="list-group" id="Product">
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h2> Restaurants: </h2>
+                <ul class="list-group" id="Restaurant">
+                </ul>
+              </div>
+            </div>
+           `
+  }
+
+  function createListLayout(){
+    return `<ul class="list-group" id="todos-container">
+            </ul>
+           `
+  }
+
+
 
   function renderTodos(todos){
     $('#todos-container').empty().html(todos.map(createTodo).reverse());
+  };
+
+  function renderCategoryTodos(todos, category){
+    // let categoryTodos = todos.filter(function(todo){
+    //   todo.category === "Movie"});
+
+    let manualFilter = function(todos){
+      let results = [];
+      for(let i = 0; i < todos.length; i++){
+        if(todos[i].category === category){
+          results.push(todos[i]);
+        }
+      }
+      return results;
+    }
+    let selector = "#" + category;
+    let mappedTodos = manualFilter(todos).map(createTodo);
+    $(selector).empty().html(mappedTodos);
   };
 
   function renderCompleteTodos(todos){
     $('#complete-todos').empty().html(todos.map(createCompletedTodo).reverse());
   };
 
-  var user_id = $('#email').data('email');
+  var user_id = $('#userId').data('userId');
+  let view_state = "List";
 
   function loadTodos(userId){
     $.ajax({
@@ -101,6 +154,52 @@ $(() => {
 
   loadCompleteTodos(user_id);
 
+  function loadCategoryTodos(userId, category){
+    $.ajax({
+      url: `/users/${userId}/todos`,
+      method: 'GET',
+      datatype: 'json'
+    }).done(function(results){
+      renderCategoryTodos(results, category);
+    })
+  };
+
+  function loadAllCategories(userId){
+    loadCategoryTodos(userId, "Movie");
+    loadCategoryTodos(userId, "Book");
+    loadCategoryTodos(userId, "Product");
+    loadCategoryTodos(userId, "Restaurant");
+  }
+
+  loadTodos(user_id);
+
+  // function renderViewState(userId){
+  //   if(view_state === "List"){
+  //     loadCompleteTodos(user_id);
+  //     loadTodos(user_id);
+  //   }else{
+  //     loadAllCategories(userId);
+  //     loadCompleteTodos(user_id);
+  //   }
+  // }
+
+  $('#list-view').on('click', function(event){
+    $(this).addClass('active');
+    $(this).parent().find('#table-view').removeClass('active');
+    $('#Movie').parent().parent().parent().empty().html(createListLayout());
+    loadTodos(user_id);
+    loadCompleteTodos(user_id);
+    view_state = "List";
+  })
+
+  $('#table-view').on('click', function(event){
+    $(this).addClass('active');
+    $(this).parent().find('#list-view').removeClass('active');
+    $('#todos-container').parent().empty().html(createTableLayout());
+    loadAllCategories(user_id);
+    view_state = "Table";
+  })
+
   $('#new-todo').on('submit', function(event){
     event.preventDefault();
     // console.log($('#new-todo').serialize());
@@ -121,11 +220,12 @@ $(() => {
     }).done(function () {
       $(event.target).trigger('reset');
       loadTodos(user_id);
+      loadAllCategories(user_id);
     });
   })
 
   // Complete a todo
-  $('#todos-container').on('click', 'input' ,function(event){
+  $('#todos-container-container').on('click', 'input' ,function(event){
     const todo_id = $(this).parent().parent().data().todo_id;
     const todo_li = $(this).parent().parent();
     if($(this).is(':checked')){
@@ -139,6 +239,7 @@ $(() => {
       }).done(function(){
         loadTodos(user_id);
         loadCompleteTodos(user_id);
+        loadAllCategories(user_id);
       })
     }
   })
@@ -158,13 +259,14 @@ $(() => {
       }).done(function(){
         loadTodos(user_id);
         loadCompleteTodos(user_id);
+        loadAllCategories(user_id);
       });
     }
   });
 
 
   // Show details of a todo
-  $('#todos-container').on('click', '#show-details' ,function(event){
+  $('#todos-container-container').on('click', '#show-details' ,function(event){
     event.preventDefault();
     const todo_id = $(this).parent().data().todo_id;
     const todo_li = $(this).parent();
@@ -180,7 +282,7 @@ $(() => {
   });
 
   // Hide details of a todo
-  $('#todos-container').on('click', '#hide-details' ,function(event){
+  $('#todos-container-container').on('click', '#hide-details' ,function(event){
     event.preventDefault();
     const todo_id = $(this).parent().data().todo_id;
     const todo_li = $(this).parent();
@@ -195,7 +297,7 @@ $(() => {
   });
 
   // Show details of a todo
-  $('#todos-container').on('click', '#delete' ,function(event){
+  $('#todos-container-container').on('click', '#delete' ,function(event){
     event.preventDefault();
     const todo_id = $(this).parent().data().todo_id;
     const todo_li = $(this).parent();
@@ -209,7 +311,7 @@ $(() => {
   });
 
   // Get editable from
-  $('#todos-container').on('click', '#edit' ,function(event){
+  $('#todos-container-container').on('click', '#edit' ,function(event){
     event.preventDefault();
     const todo_id = $(this).parent().data().todo_id;
     const todo_li = $(this).parent();
@@ -224,7 +326,7 @@ $(() => {
   });
 
   // Update todo with new info
-  $('#todos-container').on('submit', '#todo-edit', function(event){
+  $('#todos-container-container').on('submit', '#todo-edit', function(event){
     event.preventDefault();
     const todo_id = $(this).parent().data().todo_id;
     const todo_li = $(this).parent();
@@ -235,6 +337,7 @@ $(() => {
       category: $('#category').val() || null
     };
 
+    // Only add the date if it isn't null
     if(dateChecker(moment($('#due_date').val()).format('YYYY-MM-DD'))){
       sendData.due_date = moment($('#due_date').val()).format('YYYY-MM-DD');
     };
@@ -255,8 +358,8 @@ $(() => {
     })
   });
 
-// This doesn't work yet. FIX! ERROR!
-  $('#todos-container').on('click', '#cancel', function(event){
+// Cancel editing the todo
+  $('#todos-container-container').on('click', '#cancel', function(event){
     event.preventDefault();
     const todo_id = $(this).parent().parent().data().todo_id;
     const todo_li = $(this).parent().parent();
