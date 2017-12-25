@@ -18,14 +18,37 @@ let watch = [
   'catch',
   'cinema',
   'film',
-  'movie',
-
+  'movie'
 ]
 
 let read = [
   'read',
   ''
 ]
+
+getType = (data, actionSet, action) => {
+  let type = {
+    action: 'uncategorized'
+  };
+  data.forEach((word, index) => {
+    if (actionSet.indexOf(word) != -1) {
+      type.action = action;
+      type.action_index = index;
+      return type;
+    }
+  });
+  return type;
+}
+
+var getTarget = (clean, action_index) => {
+  let target = "";
+  clean.forEach((w, i) => {
+    if (i != action_index && i > action_index) {
+      target += w + ' ';
+    }
+  });
+  return target.trim();
+}
 
 module.exports = () => {
   return {
@@ -35,20 +58,15 @@ module.exports = () => {
       data.toLowerCase().split(' ').forEach((word) => {
         if (stopwords.indexOf(word) == -1) clean.push(word)
       });
-      let target = "";
-      let action_index;
-      clean.forEach((word, index) => {
-        if (eat.indexOf(word) != -1) {
-          obj.action = 'restaurant';
-          action_index = index;
-        }
-      })
-      clean.forEach((w, i) => {
-        if (i != action_index && i > action_index) {
-          target += w + ' ';
-        }
-      })
-      obj.target = target.trim();
+      let food = getType(clean, eat, 'restaurant');
+      let movie = getType(clean, watch, 'movie');
+      if (food.action != 'uncategorized') {
+        obj.action = food.action;
+        obj.target = getTarget(clean, food.action_index);
+      } else if (movie.action != 'uncategorized') {
+        obj.action = movie.action;
+        obj.target = getTarget(clean, movie.action_index);
+      }
       return obj;
     },
     classifier_movie: (data) => {
