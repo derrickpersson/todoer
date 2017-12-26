@@ -118,16 +118,33 @@ module.exports = (datahelper) => {
 
   router.post('/:uid/todos/new', (req, res) =>{
     console.log(req.body);
+    let sentences = req.body.title.split(',');
     let cat = nlp.classifier(req.body.title);
     console.log(cat);
-
-    datahelper.createTodo(req.body.title,req.session.user_id, cat.action, cat.target).
-    then(() =>{
-      return res.send(200);
-    }).
-    catch((err) => {
-      return res.send(500);
-    });
+    let collection = [];
+    sentences.forEach((sen) => {
+      let todo = nlp.classifier(sen);
+      todo.title = sen;
+      collection.push(todo);
+    })
+    console.log(collection);
+    if (collection.length === 1) {
+      datahelper.createTodo(req.body.title,req.session.user_id, cat.action, cat.target).
+      then(() =>{
+        return res.send(200);
+      }).
+      catch((err) => {
+        return res.send(500);
+      });
+    } else if (collection.length > 1) {
+      datahelper.crateMultipleTodos(collection,req.session.user_id).
+      then((data) => {
+        console.log("insert multiple back", data);
+        return res.send(200);
+      }).catch((err) => {
+        return res.send(500);
+      });
+    }
   });
 
   // update a to do:

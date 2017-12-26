@@ -1,3 +1,28 @@
+var createMultiple = (todos, userId, dataBase) => {
+    return dataBase('todos').insert({
+      title: todos[0].title,
+      user_id: userId,
+      category: todos[0].action,
+      complete: false,
+      recommendation_request: todos[0].target
+    }).
+    then(() => {
+      if (todos.length == 1) return Promise.resolve({result: "good"});
+      let temp = [];
+      todos.forEach((item, index) => {
+        if (index !== 0) {
+          temp.push(item);
+        }
+      });
+      console.log("temp length",temp.length);
+      if (todos.length > 0) {
+        return createMultiple(temp, userId, dataBase);
+      }
+    });
+}
+
+
+
 module.exports = function makeDataHelpers(db){
   return {
     // Get a list of all the todos for a given user ID
@@ -17,6 +42,19 @@ module.exports = function makeDataHelpers(db){
         recommendation_request: destination
       })
     },
+    // crateMultipleTodos:
+    crateMultipleTodos: (todos, userId) => {
+      return new Promise ((resolve, reject) => {
+        createMultiple(todos,userId, db).
+        then((data) => {
+          resolve(data);
+        }).
+        catch((err) => {
+          reject(err);
+        })
+      })
+    }
+    ,
     // Get all the categories assigned to a to do
     getTodoCategories: function(taskId){
       return db.select('categories.name').from('todos')
