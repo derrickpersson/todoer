@@ -4,6 +4,7 @@ const express = require('express');
 const router  = express.Router();
 const nlp = require('./classification.js')();
 const yelp = require('./yelpHelper.js')();
+const tms = require('./movieHelper.js')();
 const moment = require('moment');
 
 
@@ -51,19 +52,55 @@ module.exports = (datahelper) => {
   //Get a single todo to render
   router.get('/:uid/todos/:tid', (req, res) => {
     // get data from yelp
-    yelp.randomSearchByname(req.params.tid).
-    then((apiData) => {
-      // data from our db;
-      datahelper.getSingleTodo(req.params.tid).
-      then((dbData) => {
-        let data = {};
-        data.dbData = dbData[0];
-        data.apiData = apiData;
-        res.json(data);
-      })
-    }).
-    catch((err) => {
-      res.send(500);
+    // yelp.randomSearchByname(req.params.tid).
+    // then((apiData) => {
+    //   // data from our db;
+    //   datahelper.getSingleTodo(req.params.tid).
+    //   then((dbData) => {
+    //     let data = {};
+    //     data.dbData = dbData[0];
+    //     data.apiData = apiData;
+    //     res.json(data);
+    //   })
+    // }).
+    // catch((err) => {
+    //   res.send(500);
+    // })
+    // search that todo in db.
+    datahelper.getSingleTodo(req.params.tid).
+    then((dbData) => {
+      //1 if cat = food;
+      if (dbData[0].category == "restaurant") {
+        console.log("It is a restaurant; searching yelp!");
+        yelp.randomSearchByname(req.params.tid).
+        then((apiData) => {
+          let data = {};
+          data.dbData = dbData[0];
+          data.apiData = apiData;
+          return res.json(data);
+        })
+      }
+      else if (dbData[0].category == 'movie') {
+        console.log("It is a movie; searching tmsapi");
+        tms.randomSearchByname(dbData[0].recommendation_request, '2017-12-26').
+        then((apiData) => {
+          let data = {};
+          data.dbData = dbData[0];
+          data.apiData = apiData;
+          return res.json(data);
+        })
+      }
+
+
+
+
+
+
+      // else if (dbData[0].category == 'book')
+      // else if (dbData[0].category == 'product')
+      // else if (dbData[0].category == 'uncategorized')
+    }).catch((err) => {
+      return res.send(500);
     })
   });
 
