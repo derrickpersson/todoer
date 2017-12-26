@@ -79,6 +79,9 @@ module.exports = () => {
       } else if (product.action != 'uncategorized') {
         obj.action = product.action;
         obj.target = getTarget(clean, product.action_index);
+      } else {
+        obj.action = "uncategorized";
+        obj.target = data;
       }
       return obj;
     },

@@ -31,12 +31,12 @@ var serachBackword = (itemStr) => {
     temp.forEach((w, i) => {
       (i < temp.length - 1)  ? nextSearch.push(w) : void 0;
     });
-    if (nextSearch.length === 0) return Promise.resolve(null);
-    if (data.total === 0 || (data.total > 0 && data.businesses[0].name != itemStr)) {
+    if (data.total > 0 && data.businesses[0].name == itemStr) {
+      return Promise.resolve(data['businesses'][0]);
+    } else if (nextSearch.length === 0) {
+      return Promise.resolve(null);
+    } else if (data.total === 0 || (data.total > 0 && data.businesses[0].name != itemStr)) {
       return (serachBackword(nextSearch.join(' ')));
-    }
-    else if (data.total > 0 && data.businesses[0].name == itemStr) {
-        return Promise.resolve(data['businesses'][0]);
     }
   });
 };
@@ -91,6 +91,7 @@ module.exports = () => {
           console.log("serach for ", name[0].recommendation_request);
           randomSearch(name[0].recommendation_request).
           then((data) => {
+            if (data !== null) data.action = 'restaurant';
             resolve(data);
           }).
           catch((err) => reject(err));

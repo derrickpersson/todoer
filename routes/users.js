@@ -78,6 +78,9 @@ module.exports = (datahelper) => {
           data.dbData = dbData[0];
           data.apiData = apiData;
           return res.json(data);
+        }).
+        catch((err) => {
+          return res.send(500);
         })
       }
       else if (dbData[0].category == 'movie') {
@@ -88,8 +91,11 @@ module.exports = (datahelper) => {
           data.dbData = dbData[0];
           data.apiData = apiData;
           return res.json(data);
+        }).
+        catch((err) => {
+          return res.send(500);
         })
-      }
+      } 
 
 
 
