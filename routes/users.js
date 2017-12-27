@@ -16,7 +16,9 @@ AWS.config.region = "us-east-1";
 AWS.config.accessKeyId = process.env.accessKeyID;
 AWS.config.secretAccessKey = process.env.secretAccessKey;
 
-var rekognition = new AWS.Rekognition({
+const today = new Date();
+
+const rekognition = new AWS.Rekognition({
   region: "us-east-1"
 });
 
@@ -146,8 +148,10 @@ module.exports = (datahelper) => {
           return res.send(500);
         })
       } else if (dbData[0].category == 'movie') {
+        console.log("today", today);
+        console.log("format day",moment(today).format('YYYY-MM-DD'));
         console.log("It is a movie; searching tmsapi");
-        tms.randomSearchByname(dbData[0].recommendation_request, '2017-12-27').
+        tms.randomSearchByname(dbData[0].recommendation_request, moment(today).format('YYYY-MM-DD')).
         then((apiData) => {
           let data = {};
           data.dbData = dbData[0];
@@ -169,21 +173,8 @@ module.exports = (datahelper) => {
           })
       }
         else if (dbData[0].category == 'uncategorized') {
-        console.log("uncategorized item; perform searching");
-        console.log("first; search in yelp");
-        yelp.randomSearchByname(req.params.tid).
-        then((apiData) => {
-          // update dbData category;
-          let data = {};
-          data.dbData = dbData[0];
-          // modify category;
-          data.dbData.category = 'restaurant';
-          data.apiData = apiData;
-          return res.json(data);
-        }).
-        catch((err) => {
-          return res.send(500);
-        })
+        console.log("uncategorized item;")
+        return res.send(200);
       }
 
 
@@ -247,20 +238,19 @@ module.exports = (datahelper) => {
   });
 
   router.post('/face/login', (req, res) => {
-    // datahelper.loginUser(req.body.email, req.body.password).
-    // then((data) => {
-    //   console.log("data 0",data[0]);
-    //   if (req.body.password === data[0].password) {
-    //     console.log(data);
-    //     console.log(req.body.password);
-    //     console.log(req.body.email);
-    req.session.user_id = 11;
-    return res.redirect('/');
-    // }
-    // }).
-    // catch((err) => {
-    //   return res.redirect('/login');
-    // })
+    datahelper.loginUser(req.body.email, req.body.password).
+    then((data) => {
+      console.log("data 0", data[0]);
+        console.log(data);
+        console.log(req.body.password);
+        console.log(req.body.email);
+        req.session.user_id = data[0].id;
+        req.session.email = data[0].email;
+        return res.send(200);
+    }).
+    catch((err) => {
+      return res.send(500);
+    })
   });
 
  router.post('/:uid/logout', (req, res) => {

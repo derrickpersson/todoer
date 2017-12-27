@@ -3,6 +3,8 @@ const dotenv = require('dotenv');
 
 dotenv.load();
 
+console.log(process.env.AMZ_AWSID);
+
 const opHelper = new OperationHelper({
     awsId:     process.env.AMZ_AWSID,
     awsSecret: process.env.AMZ_API,

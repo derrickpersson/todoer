@@ -1,6 +1,8 @@
 const request = require('request');
 const token = process.env.MOVIE_TOKEN;
 
+console.log("token", token);
+
 var showTimeBydateAndZip = (zip, date) => {
   return new Promise((resolve, reject) => {
     request(`http://data.tmsapi.com/v1.1/movies/showings?startDate=${date}&zip=${zip}&api_key=${token}`,
@@ -13,7 +15,7 @@ var showTimeBydateAndZip = (zip, date) => {
 
 var searchByname = (title, today) => {
   return new Promise((resolve, reject) => {
-    showTimeBydateAndZip('V3R2T2', today).
+    showTimeBydateAndZip('V6J4L2', today).
     then((data) => {
       //console.log("current searByname found", data);
       //if (!data) return Promise.resolve(null);
