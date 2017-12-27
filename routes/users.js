@@ -1,58 +1,62 @@
 "use strict";
 
 const express = require('express');
-const router  = express.Router();
+const router = express.Router();
 const nlp = require('./classification.js')();
 const yelp = require('./yelpHelper.js')();
 const tms = require('./movieHelper.js')();
 const moment = require('moment');
-const multer  = require('multer');
-const upload  = multer();
+const multer = require('multer');
+const upload = multer();
 const AWS = require('aws-sdk');
 require('dotenv').config();
 
 AWS.config.region = "us-east-1";
 AWS.config.accessKeyId = process.env.accessKeyID;
-AWS.config.secretAccessKey= process.env.secretAccessKey;
+AWS.config.secretAccessKey = process.env.secretAccessKey;
 
-var rekognition = new AWS.Rekognition({region:"us-east-1"});
+var rekognition = new AWS.Rekognition({
+  region: "us-east-1"
+});
 
-function indexFaces(bitmap,name) {
-   rekognition.indexFaces({
-      "CollectionId": 'users',
-      "DetectionAttributes": [ "ALL" ],
-      "ExternalImageId": name,
-      "Image": {
-       "Bytes": bitmap
-      }
-   }, function(err, data) {
-     if (err) {
-       console.log(err, err.stack); // an error occurred
-     } else {
-       console.log(data);           // successful response
-     }
-   });
+function indexFaces(bitmap, name) {
+  rekognition.indexFaces({
+    "CollectionId": 'users',
+    "DetectionAttributes": ["ALL"],
+    "ExternalImageId": name,
+    "Image": {
+      "Bytes": bitmap
+    }
+  }, function(err, data) {
+    if (err) {
+      console.log(err, err.stack); // an error occurred
+    } else {
+      console.log(data); // successful response
+    }
+  });
 }
 
 let FACE_COLLECTION = "users";
 
 function createCollection() {
- // Index a dir of faces
- rekognition.createCollection( { "CollectionId": FACE_COLLECTION }, function(err, data) {
-   if (err) {
-   console.log(err, err.stack); // an error occurred
-   } else {
-   console.log(data);           // successful response
-   }
- });
+  // Index a dir of faces
+  rekognition.createCollection({
+    "CollectionId": FACE_COLLECTION
+  }, function(err, data) {
+    if (err) {
+      console.log(err, err.stack); // an error occurred
+    } else {
+      console.log(data); // successful response
+    }
+  });
 }
 
 module.exports = (datahelper) => {
   router.get("/", (req, res) => {
-     res.send(200);
- });
+    res.send(200);
+  });
 
-  router.post('/saveimage/:id',upload.single('webcam') ,(req, res,next) => {
+  router.post('/saveimage/:id', upload.single('webcam'), (req, res, next) => {
     //createCollection();
     console.log(req.file);
     console.log("bufferrrrrrrrr", req.file.buffer);
@@ -60,7 +64,7 @@ module.exports = (datahelper) => {
     return res.status(200).send("uploading to AWS");
   });
 
-  router.post('/compare', upload.single('webcam') ,(req, res) => {
+  router.post('/compare', upload.single('webcam'), (req, res) => {
     var bitmap = req.file.buffer;
     rekognition.searchFacesByImage({
       "CollectionId": 'users',
@@ -73,24 +77,24 @@ module.exports = (datahelper) => {
       if (err) {
         res.send(err);
       } else {
-        if(data.FaceMatches && data.FaceMatches.length > 0 && data.FaceMatches[0].Face)
-        {
-          //console.log("server face",JSON.parse(data.FaceMatches[0].face));
+        if (data.FaceMatches && data.FaceMatches.length > 0 && data.FaceMatches[0].Face) {
           res.send(data.FaceMatches[0].Face);
         } else {
-          res.send({result : "Not recognized"});
+          res.send({
+            result: "Not recognized"
+          });
         }
       }
     });
   });
   // GET /users/:uid/todos
   // CHANGE UID TO USER NAME LATER
-  router.get("/:uid/todos", (req,res)  => {
+  router.get("/:uid/todos", (req, res) => {
     datahelper.queryTodos(req.session.user_id).
     then((data) => {
       return res.json(data);
     }).
-    catch((err) =>{
+    catch((err) => {
       console.log(err);
       return res.send(500);
     });
@@ -98,13 +102,13 @@ module.exports = (datahelper) => {
 
   router.get('/:uid/todos/complete', (req, res) => {
     datahelper.getCompleteToDos(req.session.user_id)
-      .then((data) =>{
+      .then((data) => {
         return res.json(data);
       }).
-      catch((err) =>{
-        console.log(err);
-        return res.send(500);
-      });
+    catch((err) => {
+      console.log(err);
+      return res.send(500);
+    });
   });
 
   //Get a single todo to render
@@ -140,8 +144,7 @@ module.exports = (datahelper) => {
         catch((err) => {
           return res.send(500);
         })
-      }
-      else if (dbData[0].category == 'movie') {
+      } else if (dbData[0].category == 'movie') {
         console.log("It is a movie; searching tmsapi");
         tms.randomSearchByname(dbData[0].recommendation_request, '2017-12-27').
         then((apiData) => {
@@ -158,13 +161,13 @@ module.exports = (datahelper) => {
         console.log("first; search in yelp");
         yelp.randomSearchByname(req.params.tid).
         then((apiData) => {
-            // update dbData category;
-            let data = {};
-            data.dbData = dbData[0];
-            // modify category;
-            data.dbData.category = 'restaurant';
-            data.apiData = apiData;
-            return res.json(data);
+          // update dbData category;
+          let data = {};
+          data.dbData = dbData[0];
+          // modify category;
+          data.dbData.category = 'restaurant';
+          data.apiData = apiData;
+          return res.json(data);
         }).
         catch((err) => {
           return res.send(500);
@@ -211,11 +214,11 @@ module.exports = (datahelper) => {
     })
   });
 
-//Login post
+  //Login post
   router.post('/login', (req, res) => {
     datahelper.loginUser(req.body.email, req.body.password).
     then((data) => {
-      console.log("data 0",data[0]);
+      console.log("data 0", data[0]);
       if (req.body.password === data[0].password) {
         console.log(data);
         console.log(req.body.password);
@@ -240,19 +243,19 @@ module.exports = (datahelper) => {
     //     console.log(req.body.email);
     req.session.user_id = 11;
     return res.redirect('/');
-      // }
+    // }
     // }).
     // catch((err) => {
     //   return res.redirect('/login');
     // })
   });
 
- router.post('/:uid/logout', (req, res) => {
-   res.session.user_id = null;
-   return res.redirect('/');
- });
+  router.post('/:uid/logout', (req, res) => {
+    res.session.user_id = null;
+    return res.redirect('/');
+  });
 
-  router.post('/:uid/todos/new', (req, res) =>{
+  router.post('/:uid/todos/new', (req, res) => {
     console.log(req.body);
     let sentences = req.body.title.split(',');
     let cat = nlp.classifier(req.body.title);
@@ -266,15 +269,15 @@ module.exports = (datahelper) => {
     console.log(collection);
     if (collection.length === 1) {
       console.log("insert one todo");
-      datahelper.createTodo(req.body.title,req.session.user_id, cat.action, cat.target).
-      then(() =>{
+      datahelper.createTodo(req.body.title, req.session.user_id, cat.action, cat.target).
+      then(() => {
         return res.send(200);
       }).
       catch((err) => {
         return res.send(500);
       });
     } else if (collection.length > 1) {
-      datahelper.crateMultipleTodos(collection,req.session.user_id).
+      datahelper.crateMultipleTodos(collection, req.session.user_id).
       then((data) => {
         console.log("insert multiple back", data);
         return res.send(200);

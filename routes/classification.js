@@ -83,6 +83,7 @@ module.exports = () => {
         obj.action = "uncategorized";
         obj.target = data;
       }
+      console.log(obj);
       return obj;
     },
     classifier_movie: (data) => {

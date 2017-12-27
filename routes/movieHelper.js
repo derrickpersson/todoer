@@ -41,6 +41,7 @@ var searchByname = (title, today) => {
 
 var searchBackward = (name,today) => {
   return new Promise((resolve, reject) => {
+    console.log("Back: current search movie", name);
     searchByname(name, today).
     then((data) => {
       resolve(data);
@@ -54,6 +55,7 @@ var searchBackward = (name,today) => {
     temp.forEach((w,i) => {
       (i < temp.lengh - 1) ? nextSearch.push(w) : void 0;
     });
+    console.log("Back: next search movie");
     if (data != null && data.title == name) {
       return Promise.resole(data);
     } else if (nextSearch.length === 0) {
@@ -66,6 +68,7 @@ var searchBackward = (name,today) => {
 
 var randomSearch = (name,today) => {
   return new Promise ((resolve, reject) => {
+    console.log("Forward: current search movie", name);
     if (name.length === 0) resolve(null);
     searchByname(name, today).
     then((data) => {
@@ -91,7 +94,7 @@ var randomSearch = (name,today) => {
       if (i != 0) transformed.push(w);
     });
     let result = transformed.join(' ');
-    console.log("new forward input", result);
+    console.log("Forward: next search movie", result);
     if (transformed.length == 0 || data != null) return Promise.resolve(data);
     else if (transformed.length == 0 && data == null) return Promise.resolve(null);
     else if (transformed.length != 0) return randomSearch(result, today);
@@ -100,7 +103,6 @@ var randomSearch = (name,today) => {
     reject(err);
   })
 }
-
 
 module.exports = () => {
   return {
