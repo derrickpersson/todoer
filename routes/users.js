@@ -95,7 +95,25 @@ module.exports = (datahelper) => {
         catch((err) => {
           return res.send(500);
         })
-      } 
+      } else if (dbData[0].category == 'uncategorized') {
+        console.log("uncategorized item; perform searching");
+        console.log("first; search in yelp");
+        yelp.randomSearchByname(req.params.tid).
+        then((apiData) => {
+          if (apiData != null) {
+            // update dbData category;
+            let data = {};
+            data.dbData = dbData[0];
+            // modify category;
+            data.dbData.category = 'restaurant';
+            data.apiData = apiData;
+            return res.json(data);
+          }
+        }).
+        catch((err) => {
+          return res.send(500);
+        })
+      }
 
 
 
