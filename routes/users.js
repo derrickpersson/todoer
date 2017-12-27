@@ -75,6 +75,7 @@ module.exports = (datahelper) => {
       } else {
         if(data.FaceMatches && data.FaceMatches.length > 0 && data.FaceMatches[0].Face)
         {
+          //console.log("server face",JSON.parse(data.FaceMatches[0].face));
           res.send(data.FaceMatches[0].Face);
         } else {
           res.send({result : "Not recognized"});
@@ -223,8 +224,27 @@ module.exports = (datahelper) => {
         req.session.user_id = data[0].id;
         return res.redirect('/');
       }
+    }).
+    catch((err) => {
+      return res.redirect('/login');
     })
-    //catch err
+  });
+
+  router.post('/face/login', (req, res) => {
+    // datahelper.loginUser(req.body.email, req.body.password).
+    // then((data) => {
+    //   console.log("data 0",data[0]);
+    //   if (req.body.password === data[0].password) {
+    //     console.log(data);
+    //     console.log(req.body.password);
+    //     console.log(req.body.email);
+    req.session.user_id = 11;
+    return res.redirect('/');
+      // }
+    // }).
+    // catch((err) => {
+    //   return res.redirect('/login');
+    // })
   });
 
  router.post('/:uid/logout', (req, res) => {
