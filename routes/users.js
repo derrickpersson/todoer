@@ -11,23 +11,11 @@ const moment = require('moment');
 module.exports = (datahelper) => {
 
   router.get("/", (req, res) => {
-     // datahelper
-     //   .select("*")
-     //   .from("users")
-     //   .then((results) => {
-     //     res.json(results);
-     // });
      res.send(200);
  });
   // GET /users/:uid/todos
   // CHANGE UID TO USER NAME LATER
   router.get("/:uid/todos", (req,res)  => {
-    // select todos where user_id == uid;
-    // send to ejs template tp render.
-    // datahelper.queryTodos('2', (err, data) => {
-    //   console.log(data);
-    //   res.send(200);
-    // });
     datahelper.queryTodos(req.session.user_id).
     then((data) => {
       return res.json(data);
@@ -85,7 +73,7 @@ module.exports = (datahelper) => {
       }
       else if (dbData[0].category == 'movie') {
         console.log("It is a movie; searching tmsapi");
-        tms.randomSearchByname(dbData[0].recommendation_request, '2017-12-26').
+        tms.randomSearchByname(dbData[0].recommendation_request, '2017-12-27').
         then((apiData) => {
           let data = {};
           data.dbData = dbData[0];
@@ -100,7 +88,6 @@ module.exports = (datahelper) => {
         console.log("first; search in yelp");
         yelp.randomSearchByname(req.params.tid).
         then((apiData) => {
-          if (apiData != null) {
             // update dbData category;
             let data = {};
             data.dbData = dbData[0];
@@ -108,7 +95,6 @@ module.exports = (datahelper) => {
             data.dbData.category = 'restaurant';
             data.apiData = apiData;
             return res.json(data);
-          }
         }).
         catch((err) => {
           return res.send(500);
@@ -190,6 +176,7 @@ module.exports = (datahelper) => {
     })
     console.log(collection);
     if (collection.length === 1) {
+      console.log("insert one todo");
       datahelper.createTodo(req.body.title,req.session.user_id, cat.action, cat.target).
       then(() =>{
         return res.send(200);

@@ -20,7 +20,7 @@ var searchByname = (title, today) => {
         resolve(null);
       }
       //let result;
-      else if  (data.title.toLowerCase() === title) {
+      else if  (data !== null && data.title && data.title.toLowerCase() === title) {
         resolve(movie);
       }
     }).
@@ -31,7 +31,7 @@ var searchByname = (title, today) => {
 
 var searchBackward = (name) => {
   return new Promise((resolve, reject) => {
-    searchByname(name, '2017-12-26').
+    searchByname(name, '2017-12-27').
     then((data) => {
       resolve(data);
     }).
@@ -57,7 +57,7 @@ var searchBackward = (name) => {
 var randomSearch = (name) => {
   return new Promise ((resolve, reject) => {
     if (name.length === 0) resolve(null);
-    searchByname(name, "2017-12-26").
+    searchByname(name, "2017-12-27").
     then((data) => {
       if (data != null) {
         console.log("movie forward found", data);
@@ -83,6 +83,7 @@ var randomSearch = (name) => {
     let result = transformed.join(' ');
     console.log("new forward input", result);
     if (transformed.length == 0 || data != null) return Promise.resolve(data);
+    else if (transformed.length == 0 && data == null) return Promise.resolve(null);
     else if (transformed.length != 0) return randomSearch(result);
   }).
   catch((err) => {
@@ -93,14 +94,35 @@ var randomSearch = (name) => {
 
 module.exports = () => {
   return {
+    // randomSearchByname: (title, today) => {
+    //   return new Promise((resolve, reject) => {
+    //     randomSearch(title).
+    //     then((data) => {
+    //       resolve(data);
+    //     }).
+    //     catch((err) => {
+    //       reject (err);
+    //     })
+    //   })
+    // }
     randomSearchByname: (title, today) => {
       return new Promise((resolve, reject) => {
-        randomSearch(title).
+        showTimeBydateAndZip('V3R2T2', today).
         then((data) => {
-          resolve(data);
+          //console.log("current searByname found", data);
+          if (!data) return Promise.resolve(null);
+          let result = null;
+          data.forEach((movie) => {
+            if (movie.title.toLowerCase() === title) {
+              console.log("found movie", movie);
+              result = movie;
+            }
+          });
+          resolve(result);
         }).
         catch((err) => {
-          reject (err);
+          console.log(err);
+          reject(err);
         })
       })
     }

@@ -71,7 +71,9 @@ var randomSearch = (itemStr) => {
     });
     let result = transformed.join(' ');
     console.log("new forward input", result);
+    console.log("new forward input length", transformed.length);
     if (transformed.length == 0 || data != null) return Promise.resolve(data);
+    else if (transformed.length == 0 && data == null) return Promise.resolve(null);
     else if (transformed.length != 0) return randomSearch(result);
   }).
   catch((err) => {

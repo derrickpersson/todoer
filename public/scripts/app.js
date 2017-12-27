@@ -78,6 +78,19 @@ $(() => {
             `;
   };
 
+  function createNotfoundTodo(todo){
+    return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo.dbData.id}">
+              <span class="todo-check"><input type="checkbox" class="todo-check"></span>
+              <span class="label label-info"></span>
+              <a class="btn btn-primary btn-xs pull-right" id="hide-details" href="#" role="button">Hide</a>
+              <p></p>
+              <a class="btn btn-primary btn-xs" href="#" id="edit" role="button">Edit</a>
+              <a class="btn btn-danger btn-xs" href="#" id="delete" role="button">Delete</a>
+              <small class="pull-right">Due Date:  .format('MM / DD / YYYY'))}</small>
+            </li>
+            `;
+  };
+
 // function foodDetails(apiData) {
 //   return `
 //     <li class="list-group-item">Name: ${apiData.name}</li>
@@ -90,10 +103,10 @@ $(() => {
 
 
   function createEditableTodo(todo){
-    return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo.dbData.id}">
+    return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo.id}">
               <form id="todo-edit">
                 <span class="todo-check"><input name="complete" type="checkbox" class="todo-check"></span>
-                <input id="title" name="title" value="${todo.dbData.title}">
+                <input id="title" name="title" value="${todo.title}">
                 <select id="category" name="category">
                   <option value="restaurant"> Restaurant</option>
                   <option value="movie"> Movie</option>
@@ -103,7 +116,7 @@ $(() => {
                 <!-- <p class="mb-1"><textarea id="description" name="description" class="form-control" rows=3>${blankIfNull(todo.description)}</textarea></p> -->
                 <button class="btn btn-primary btn-xs" href="#" id="save" value="submit">Save</button>
                 <button class="btn btn-danger btn-xs" href="#" id="cancel" value="cancel">Cancel</button>
-                <small class="pull-right">Due Date:  <input id="due_date" name="due_date" type="date" value="${moment(blankIfNull(todo.dbData.due_date)).format('YYYY-MM-DD')}"></small>
+                <small class="pull-right">Due Date:  <input id="due_date" name="due_date" type="date" value="${moment(blankIfNull(todo.due_date)).format('YYYY-MM-DD')}"></small>
               </form>
           </li>
           `;
@@ -333,7 +346,14 @@ function bar() {
     }).done(function(data){
       // Replace the single li with the new li with details.
       console.log(data);
-      $('#lodaing').replaceWith(createExpandedTodo(data));
+      if (data.apiData !== null) {
+        $('#lodaing').replaceWith(createExpandedTodo(data));
+      }
+      //
+      else if (data.apiData === null) {
+      //  data.apiData = data.dbData;
+      $('#lodaing').replaceWith(createNotfoundTodo(data));
+      }
     })
   });
 
@@ -373,7 +393,7 @@ function bar() {
     const todo_li = $(this).parent();
     $.ajax({
       method:"GET",
-      url: `/users/${user_id}/todos/${todo_id}`,
+      url: `/users/${user_id}/todos/db/${todo_id}`,
       datatype: 'json'
     }).done(function(data){
       // Replace the single li with the new li with details.
@@ -406,11 +426,14 @@ function bar() {
     }).then( (data) => {
       $.ajax({
         method:"GET",
-        url: `/users/${user_id}/todos/${todo_id}`,
+        url: `/users/${user_id}/todos/db/${todo_id}`,
         datatype: 'json'
       }).done(function(data){
-        // Replace the single li with the new li with details.
-        todo_li.replaceWith(createExpandedTodo(data));
+        // Replace the single li with the new li with details.//
+
+        //todo_li.replaceWith(createExpandedTodo(data));
+        todo_li.replaceWith(createTodo(data));
+
       })
     })
   });
@@ -422,11 +445,11 @@ function bar() {
     const todo_li = $(this).parent().parent();
     $.ajax({
       method:"GET",
-      url: `/users/${user_id}/todos/${todo_id}`,
+      url: `/users/${user_id}/todos/db/${todo_id}`,
       datatype: 'json'
     }).done(function(data){
       // Replace the single li with the new li with details.
-      todo_li.replaceWith(createExpandedTodo(data));
+      todo_li.replaceWith(createTodo(data));
     });
   });
 
