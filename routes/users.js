@@ -261,7 +261,7 @@ module.exports = (datahelper) => {
   });
 
  router.post('/:uid/logout', (req, res) => {
-   res.session.user_id = null;
+   req.session.user_id = null;
    return res.redirect('/');
  });
 
