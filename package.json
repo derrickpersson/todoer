@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "apac": "^3.0.2",
+    "aws-sdk": "^2.175.0",
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
     "cookie-session": "^2.0.0-beta.3",
@@ -24,6 +25,7 @@
     "knex-logger": "^0.1.0",
     "moment": "^2.20.1",
     "morgan": "^1.7.0",
+    "multer": "^1.3.0",
     "node-sass-middleware": "^0.9.8",
     "pg": "^6.0.2",
     "progressbar.js": "^1.0.1",

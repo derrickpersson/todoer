@@ -6,13 +6,82 @@ const nlp = require('./classification.js')();
 const yelp = require('./yelpHelper.js')();
 const tms = require('./movieHelper.js')();
 const moment = require('moment');
+const multer  = require('multer');
+const upload  = multer();
+const AWS = require('aws-sdk');
+require('dotenv').config();
 
+AWS.config.region = "us-east-1";
+AWS.config.accessKeyId = process.env.accessKeyID;
+AWS.config.secretAccessKey= process.env.secretAccessKey;
+
+var rekognition = new AWS.Rekognition({region:"us-east-1"});
+
+function indexFaces(bitmap,name) {
+   rekognition.indexFaces({
+      "CollectionId": 'users',
+      "DetectionAttributes": [ "ALL" ],
+      "ExternalImageId": name,
+      "Image": {
+       "Bytes": bitmap
+      }
+   }, function(err, data) {
+     if (err) {
+       console.log(err, err.stack); // an error occurred
+     } else {
+       console.log(data);           // successful response
+     }
+   });
+}
+
+let FACE_COLLECTION = "users";
+
+function createCollection() {
+ // Index a dir of faces
+ rekognition.createCollection( { "CollectionId": FACE_COLLECTION }, function(err, data) {
+   if (err) {
+   console.log(err, err.stack); // an error occurred
+   } else {
+   console.log(data);           // successful response
+   }
+ });
+}
 
 module.exports = (datahelper) => {
-
   router.get("/", (req, res) => {
      res.send(200);
  });
+
+  router.post('/saveimage/:id',upload.single('webcam') ,(req, res,next) => {
+    //createCollection();
+    console.log(req.file);
+    console.log("bufferrrrrrrrr", req.file.buffer);
+    indexFaces(req.file.buffer, req.params.id);
+    return res.status(200).send("uploading to AWS");
+  });
+
+  router.post('/compare', upload.single('webcam') ,(req, res) => {
+    var bitmap = req.file.buffer;
+    rekognition.searchFacesByImage({
+      "CollectionId": 'users',
+      "FaceMatchThreshold": 70,
+      "Image": {
+        "Bytes": bitmap,
+      },
+      "MaxFaces": 1
+    }, function(err, data) {
+      if (err) {
+        res.send(err);
+      } else {
+        if(data.FaceMatches && data.FaceMatches.length > 0 && data.FaceMatches[0].Face)
+        {
+          res.send(data.FaceMatches[0].Face);
+        } else {
+          res.send({result : "Not recognized"});
+        }
+      }
+    });
+  });
   // GET /users/:uid/todos
   // CHANGE UID TO USER NAME LATER
   router.get("/:uid/todos", (req,res)  => {

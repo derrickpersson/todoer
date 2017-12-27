@@ -16,14 +16,19 @@ var searchByname = (title, today) => {
     showTimeBydateAndZip('V3R2T2', today).
     then((data) => {
       //console.log("current searByname found", data);
-      if (!data) return Promise.resolve(null);
+      //if (!data) return Promise.resolve(null);
       let result = null;
-      data.forEach((movie) => {
-        if (movie.title.toLowerCase() === title) {
-          console.log("found movie", movie);
-          result = movie;
-        }
-      });
+      console.log("____________________________");
+      console.log(typeof data);
+      console.log(Object.keys(data));
+      if (!data.errorCode) {
+        data.forEach((movie) => {
+          if (movie.title.toLowerCase() === title) {
+            console.log("found movie___________________", movie);
+            result = movie;
+          }
+        });
+      }
       resolve(result);
     }).
     catch((err) => {
