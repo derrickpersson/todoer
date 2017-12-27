@@ -24,16 +24,53 @@ $(() => {
             `;
   };
 
+  function displayYelpRating(rating){
+    var path = "Images/yelp_stars/web_and_ios/regular/regular_"
+    if(Number.isInteger(rating)){
+      return `<img src="${path}${rating}.png" alt="${rating} / 5"/>`
+    }else{
+      return `<img src="${path}${Math.floor(rating)}_half.png" alt="${rating} / 5" />`
+    }
+  }
+
+
+  function displayYelpInfo(todo){
+    return `<div class="panel panel-default">
+             <div class="panel-heading">${todo.apiData.name}</div>
+              <div class="panel-body">
+                <p class="font-weight-light">Rating: ${displayYelpRating(todo.apiData.rating)}</p>
+                <p class="font-weight-light">Address: ${todo.apiData.location.address1}</p>
+                <p class="font-weight-light">Phone: ${todo.apiData.display_phone}</p>
+              </div>
+            </div>`;
+
+
+
+          // `<p class="font-weight-light">Name: ${todo.apiData.name}</p>
+          //   <p class="font-weight-light">Rating: ${displayYelpRating(todo.apiData.rating)}</p>
+          //   <p class="font-weight-light">Address: ${todo.apiData.location.address1}</p>
+          //   <p class="font-weight-light">Phone: ${todo.apiData.display_phone}</p>
+          //  `
+  }
+
+  function displayCategoryInfo(todo, category){
+    if(category === 'restaurant'){
+      return displayYelpInfo(todo);
+    }else if(category === 'movie'){
+      return displayMovieInfo(todo);
+    }else if(category === 'product'){
+      return displayProductInfo(todo);
+    }else if(category === 'book'){
+      return displayProductInfo(todo);
+    }
+  }
+
   function createExpandedTodo(todo){
     return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo.dbData.id}">
               <span class="todo-check"><input type="checkbox" class="todo-check"></span>${todo.dbData.title}
               <span class="label label-info">${todo.dbData.category}</span>
-              <p class="font-weight-light">Name: ${todo.apiData.name}</p>
-              <p class="font-weight-light">Rating: ${todo.apiData.rating}</p>
-              <p class="font-weight-light">Address: ${todo.apiData.location.address1}</p>
-              <p class="font-weight-light">Phone: ${todo.apiData.display_phone}</p>
               <a class="btn btn-primary btn-xs pull-right" id="hide-details" href="#" role="button">Hide</a>
-              <p class="mb-1">${blankIfNull(null)}</p>
+              <p>${displayCategoryInfo(todo, todo.dbData.category)}</p>
               <a class="btn btn-primary btn-xs" href="#" id="edit" role="button">Edit</a>
               <a class="btn btn-danger btn-xs" href="#" id="delete" role="button">Delete</a>
               <small class="pull-right">Due Date:  ${dateChecker(moment(blankIfNull(todo.dbData.due_date)).format('MM / DD / YYYY'))}</small>
@@ -53,29 +90,29 @@ $(() => {
 
 
   function createEditableTodo(todo){
-    return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo.id}">
+    return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo.dbData.id}">
               <form id="todo-edit">
                 <span class="todo-check"><input name="complete" type="checkbox" class="todo-check"></span>
-                <input id="title" name="title" value="${todo.title}">
+                <input id="title" name="title" value="${todo.dbData.title}">
                 <select id="category" name="category">
-                  <option value="Restaurant"> Restaurant</option>
-                  <option value="Movie"> Movie</option>
-                  <option value="Product">Product</option>
-                  <option value="Book">Book </option>
+                  <option value="restaurant"> Restaurant</option>
+                  <option value="movie"> Movie</option>
+                  <option value="product">Product</option>
+                  <option value="book">Book </option>
                 </select>
-                <p class="mb-1"><textarea id="description" name="description" class="form-control" rows=3>${blankIfNull(todo.description)}</textarea></p>
+                <!-- <p class="mb-1"><textarea id="description" name="description" class="form-control" rows=3>${blankIfNull(todo.description)}</textarea></p> -->
                 <button class="btn btn-primary btn-xs" href="#" id="save" value="submit">Save</button>
                 <button class="btn btn-danger btn-xs" href="#" id="cancel" value="cancel">Cancel</button>
-                <small class="pull-right">Due Date:  <input id="due_date" name="due_date" type="date" value="${moment(blankIfNull(todo.due_date)).format('YYYY-MM-DD')}"></small>
+                <small class="pull-right">Due Date:  <input id="due_date" name="due_date" type="date" value="${moment(blankIfNull(todo.dbData.due_date)).format('YYYY-MM-DD')}"></small>
               </form>
           </li>
           `;
   };
 
   function createCompletedTodo(todo){
-    return `<li class="list-group-item disabled" data-todo_id="${todo.id}">
-              <span class="todo-check"><input type="checkbox" class="todo-check" checked></span>${todo.title}
-              <span class="label label-info">${todo.category}</span>
+    return `<li class="list-group-item disabled" data-todo_id="${todo.dbData.id}">
+              <span class="todo-check"><input type="checkbox" class="todo-check" checked></span>${todo.dbData.title}
+              <span class="label label-info">${todo.dbData.category}</span>
               <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
             </li>
             `;
@@ -85,24 +122,24 @@ $(() => {
     return `<div class="row">
               <div class="col-md-6">
                 <h2> Movies: </h2>
-                <ul class="list-group" id="Movie">
+                <ul class="list-group" id="movie">
                 </ul>
               </div>
               <div class="col-md-6">
                 <h2> Books: </h2>
-                <ul class="list-group" id="Book">
+                <ul class="list-group" id="book">
                 </ul>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6">
                 <h2> Products: </h2>
-                <ul class="list-group" id="Product">
+                <ul class="list-group" id="product">
                 </ul>
               </div>
               <div class="col-md-6">
                 <h2> Restaurants: </h2>
-                <ul class="list-group" id="Restaurant">
+                <ul class="list-group" id="restaurant">
                 </ul>
               </div>
             </div>
@@ -146,7 +183,6 @@ function bar() {
   };
 
   var user_id = $('#userId').data().userid;
-  console.log("current user", user_id);
   let view_state = "List";
 
   function loadTodos(userId){
@@ -184,10 +220,10 @@ function bar() {
   };
 
   function loadAllCategories(userId){
-    loadCategoryTodos(userId, "Movie");
-    loadCategoryTodos(userId, "Book");
-    loadCategoryTodos(userId, "Product");
-    loadCategoryTodos(userId, "Restaurant");
+    loadCategoryTodos(userId, "movie");
+    loadCategoryTodos(userId, "book");
+    loadCategoryTodos(userId, "product");
+    loadCategoryTodos(userId, "restaurant");
   }
 
   loadTodos(user_id);
@@ -205,7 +241,7 @@ function bar() {
   $('#list-view').on('click', function(event){
     $(this).addClass('active');
     $(this).parent().find('#table-view').removeClass('active');
-    $('#Movie').parent().parent().parent().empty().html(createListLayout());
+    $('#movie').parent().parent().parent().empty().html(createListLayout());
     loadTodos(user_id);
     loadCompleteTodos(user_id);
     view_state = "List";
@@ -341,9 +377,10 @@ function bar() {
       datatype: 'json'
     }).done(function(data){
       // Replace the single li with the new li with details.
-      todo_li.replaceWith(createEditableTodo(data[0]));
+      todo_li.replaceWith(createEditableTodo(data));
     })
   });
+
 
   // Update todo with new info
   $('#todos-container-container').on('submit', '#todo-edit', function(event){
@@ -373,7 +410,7 @@ function bar() {
         datatype: 'json'
       }).done(function(data){
         // Replace the single li with the new li with details.
-        todo_li.replaceWith(createExpandedTodo(data[0]));
+        todo_li.replaceWith(createExpandedTodo(data));
       })
     })
   });
@@ -389,7 +426,7 @@ function bar() {
       datatype: 'json'
     }).done(function(data){
       // Replace the single li with the new li with details.
-      todo_li.replaceWith(createExpandedTodo(data[0]));
+      todo_li.replaceWith(createExpandedTodo(data));
     });
   });
 
@@ -399,9 +436,13 @@ function bar() {
 // Bugs note:
 // Fix username display name
 //    Fix user_id into sessions
-
+// When you change the category away from what it is - it hangs.
+//    You are then unable to change the category back because you can't view details
+// Need to thoroughly test the categorization / API portion of the function.
 
 // TODO:
 // Add in 3 different sections to display in details section.
+//    Add in movie display section
+//    Add in products display section
 // Add in classifiers for all 4 categories
 //  Classifier optimization
