@@ -49,7 +49,7 @@ module.exports = function makeDataHelpers(db){
         }).
         catch((err) => {
           reject(err);
-        })
+        });
       })
     }
     ,
@@ -80,7 +80,7 @@ module.exports = function makeDataHelpers(db){
     },
 
     loginUser: function (email, password) {
-      return db.select('password', 'id').
+      return db.select('password', 'id', 'email').
                 from('users').
                 where('email', email);
     },

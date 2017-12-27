@@ -26,7 +26,10 @@
         <div class="navbar-header"><a class="navbar-brand" id="logo" href="#"><img src="Images/LogoSample_ByTailorBrands-cropped.png" alt="To do-er Logo"></a>
         </div>
         <div class="container-fluid">
-        <p class="navbar-text navbar-right" id="userId" data-userId="<%=user_id%>"> Signed in as <%=user_id%> </p>
+        <form class="navbar-form navbar-right" method="post" action="/users/<%= user_id %>/logout">
+          <button class="btn btn-default" href="" type="submit">Logout</button>
+        </form>
+        <p class="navbar-text navbar-right" id="userId" data-userId="<%=user_id%>"> Signed in as <%=user_email%> </p>
       </div>
       </div>
     </nav>

@@ -43,14 +43,41 @@ $(() => {
                 <p class="font-weight-light">Phone: ${todo.apiData.display_phone}</p>
               </div>
             </div>`;
+  }
 
+  function displayMovieInfo(todo){
+    return `<div class="panel panel-default">
+              <div class="panel-heading">${todo.apiData.title}</div>
+                <div class="panel-body">
+                  <p class="font-weight-light">Description: ${todo.apiData.shortDescription}</p>
+                  <p class="font-weight-light">Cast: ${todo.apiData.topCast}</p>
+                </div>
+              </div>
+            </div>
+           `
+  }
 
+function displayBookInfo(todo){
+  return `<div class="panel panel-default">
+            <div class="panel-heading">${todo.apiData.ItemAttributes.Title}</div>
+              <div class="panel-body">
+                <p class="font-weight-light">Author: ${todo.apiData.ItemAttributes.Author}</p>
+                <p class="font-weight-light"><a href="${todo.apiData.DetailPageURL}"> More Details </a></p>
+              </div>
+            </div>
+          </div>
+         `;
+  }
 
-          // `<p class="font-weight-light">Name: ${todo.apiData.name}</p>
-          //   <p class="font-weight-light">Rating: ${displayYelpRating(todo.apiData.rating)}</p>
-          //   <p class="font-weight-light">Address: ${todo.apiData.location.address1}</p>
-          //   <p class="font-weight-light">Phone: ${todo.apiData.display_phone}</p>
-          //  `
+function displayProductInfo(todo){
+  return `<div class="panel panel-default">
+            <div class="panel-heading">${todo.apiData.ItemAttributes.Title}</div>
+              <div class="panel-body">
+                <p class="font-weight-light"><a href="${todo.apiData.DetailPageURL}"> More Details </a></p>
+              </div>
+            </div>
+          </div>
+         `;
   }
 
   function displayCategoryInfo(todo, category){
@@ -61,7 +88,7 @@ $(() => {
     }else if(category === 'product'){
       return displayProductInfo(todo);
     }else if(category === 'book'){
-      return displayProductInfo(todo);
+      return displayBookInfo(todo);
     }
   }
 
@@ -78,17 +105,16 @@ $(() => {
             `;
   };
 
-  function createNotfoundTodo(todo){
+  function createNotFoundTodo(todo){
     return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo.dbData.id}">
-              <span class="todo-check"><input type="checkbox" class="todo-check"></span>
-              <span class="label label-info"></span>
-              <a class="btn btn-primary btn-xs pull-right" id="hide-details" href="#" role="button">Hide</a>
-              <p></p>
-              <a class="btn btn-primary btn-xs" href="#" id="edit" role="button">Edit</a>
-              <a class="btn btn-danger btn-xs" href="#" id="delete" role="button">Delete</a>
-              <small class="pull-right">Due Date:  .format('MM / DD / YYYY'))}</small>
-            </li>
-            `;
+            <span class="todo-check"><input type="checkbox" class="todo-check"></span>${todo.dbData.title}
+            <span class="label label-info">${todo.dbData.category}</span>
+            <a class="btn btn-primary btn-xs pull-right" id="hide-details" href="#" role="button">Hide</a>
+            <a class="btn btn-primary btn-xs" href="#" id="edit" role="button">Edit</a>
+            <a class="btn btn-danger btn-xs" href="#" id="delete" role="button">Delete</a>
+            <small class="pull-right">Due Date:  ${dateChecker(moment(blankIfNull(todo.dbData.due_date)).format('MM / DD / YYYY'))}</small>
+          </li>
+          `;
   };
 
 // function foodDetails(apiData) {
@@ -352,7 +378,7 @@ function bar() {
       //
       else if (data.apiData === null) {
       //  data.apiData = data.dbData;
-      $('#lodaing').replaceWith(createNotfoundTodo(data));
+      $('#lodaing').replaceWith(createNotFoundTodo(data));
       }
     })
   });
