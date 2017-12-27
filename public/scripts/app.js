@@ -105,17 +105,16 @@ function displayProductInfo(todo){
             `;
   };
 
-  function createNotfoundTodo(todo){
+  function createNotFoundTodo(todo){
     return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo.dbData.id}">
-              <span class="todo-check"><input type="checkbox" class="todo-check"></span>
-              <span class="label label-info"></span>
-              <a class="btn btn-primary btn-xs pull-right" id="hide-details" href="#" role="button">Hide</a>
-              <p></p>
-              <a class="btn btn-primary btn-xs" href="#" id="edit" role="button">Edit</a>
-              <a class="btn btn-danger btn-xs" href="#" id="delete" role="button">Delete</a>
-              <small class="pull-right">Due Date:  .format('MM / DD / YYYY'))}</small>
-            </li>
-            `;
+            <span class="todo-check"><input type="checkbox" class="todo-check"></span>${todo.dbData.title}
+            <span class="label label-info">${todo.dbData.category}</span>
+            <a class="btn btn-primary btn-xs pull-right" id="hide-details" href="#" role="button">Hide</a>
+            <a class="btn btn-primary btn-xs" href="#" id="edit" role="button">Edit</a>
+            <a class="btn btn-danger btn-xs" href="#" id="delete" role="button">Delete</a>
+            <small class="pull-right">Due Date:  ${dateChecker(moment(blankIfNull(todo.dbData.due_date)).format('MM / DD / YYYY'))}</small>
+          </li>
+          `;
   };
 
 // function foodDetails(apiData) {
@@ -379,7 +378,7 @@ function bar() {
       //
       else if (data.apiData === null) {
       //  data.apiData = data.dbData;
-      $('#lodaing').replaceWith(createNotfoundTodo(data));
+      $('#lodaing').replaceWith(createNotFoundTodo(data));
       }
     })
   });
