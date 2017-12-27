@@ -149,9 +149,9 @@ function displayProductInfo(todo){
   };
 
   function createCompletedTodo(todo){
-    return `<li class="list-group-item disabled" data-todo_id="${todo.dbData.id}">
-              <span class="todo-check"><input type="checkbox" class="todo-check" checked></span>${todo.dbData.title}
-              <span class="label label-info">${todo.dbData.category}</span>
+    return `<li class="list-group-item disabled" data-todo_id="${todo.id}">
+              <span class="todo-check"><input type="checkbox" class="todo-check" checked></span>${todo.title}
+              <span class="label label-info">${todo.category}</span>
               <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
             </li>
             `;
@@ -371,7 +371,6 @@ function bar() {
       datatype: 'json'
     }).done(function(data){
       // Replace the single li with the new li with details.
-      console.log(data);
       if (data.apiData !== null) {
         $('#lodaing').replaceWith(createExpandedTodo(data));
       }
