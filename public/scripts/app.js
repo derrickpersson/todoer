@@ -43,14 +43,41 @@ $(() => {
                 <p class="font-weight-light">Phone: ${todo.apiData.display_phone}</p>
               </div>
             </div>`;
+  }
 
+  function displayMovieInfo(todo){
+    return `<div class="panel panel-default">
+              <div class="panel-heading">${todo.apiData.title}</div>
+                <div class="panel-body">
+                  <p class="font-weight-light">Description: ${todo.apiData.shortDescription}</p>
+                  <p class="font-weight-light">Cast: ${todo.apiData.topCast}</p>
+                </div>
+              </div>
+            </div>
+           `
+  }
 
+function displayBookInfo(todo){
+  return `<div class="panel panel-default">
+            <div class="panel-heading">${todo.apiData.ItemAttributes.Title}</div>
+              <div class="panel-body">
+                <p class="font-weight-light">Author: ${todo.apiData.ItemAttributes.Author}</p>
+                <p class="font-weight-light"><a href="${todo.apiData.DetailPageURL}"> More Details </a></p>
+              </div>
+            </div>
+          </div>
+         `;
+  }
 
-          // `<p class="font-weight-light">Name: ${todo.apiData.name}</p>
-          //   <p class="font-weight-light">Rating: ${displayYelpRating(todo.apiData.rating)}</p>
-          //   <p class="font-weight-light">Address: ${todo.apiData.location.address1}</p>
-          //   <p class="font-weight-light">Phone: ${todo.apiData.display_phone}</p>
-          //  `
+function displayProductInfo(todo){
+  return `<div class="panel panel-default">
+            <div class="panel-heading">${todo.apiData.ItemAttributes.Title}</div>
+              <div class="panel-body">
+                <p class="font-weight-light"><a href="${todo.apiData.DetailPageURL}"> More Details </a></p>
+              </div>
+            </div>
+          </div>
+         `;
   }
 
   function displayCategoryInfo(todo, category){
@@ -61,7 +88,7 @@ $(() => {
     }else if(category === 'product'){
       return displayProductInfo(todo);
     }else if(category === 'book'){
-      return displayProductInfo(todo);
+      return displayBookInfo(todo);
     }
   }
 

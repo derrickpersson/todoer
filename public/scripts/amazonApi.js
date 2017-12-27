@@ -10,15 +10,23 @@ const opHelper = new OperationHelper({
     locale: 'CA'
 });
 
+var searchByProduct = function(name, category){
+  if(category === 'book'){
+    let searchCategory = 'book';
+  }else{
+    let searchCategory = 'All';
+  };
+  opHelper.execute('ItemSearch', {
+    'SearchIndex': category,
+    'Keywords': name,
+    'ResponseGroup': 'ItemAttributes,Offers'
+  }).then((response) => {
+      console.log("Results object: ", response.result);
+      console.log("Raw response body: ", response.responseBody);
+      console.log(response.result.ItemSearchResponse.Items.Item);
+  }).catch((err) => {
+      console.error("Something went wrong! ", err);
+  });
+}
 
-opHelper.execute('ItemSearch', {
-  'SearchIndex': 'All',
-  'Keywords': 'harry potter',
-  'ResponseGroup': 'ItemAttributes,Offers'
-}).then((response) => {
-    console.log("Results object: ", response.result);
-    console.log("Raw response body: ", response.responseBody);
-    console.log(response.result.ItemSearchResponse.Items.Item);
-}).catch((err) => {
-    console.error("Something went wrong! ", err);
-});
+console.log(searchByProduct("Lord of the Rings", "book"));

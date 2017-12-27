@@ -4,6 +4,7 @@ const express = require('express');
 const router  = express.Router();
 const nlp = require('./classification.js')();
 const yelp = require('./yelpHelper.js')();
+const amazon = require('./amazonHelper.js')();
 const tms = require('./movieHelper.js')();
 const moment = require('moment');
 const multer  = require('multer');
@@ -153,7 +154,18 @@ module.exports = (datahelper) => {
         catch((err) => {
           return res.send(500);
         })
-      } else if (dbData[0].category == 'uncategorized') {
+      } else if(dbData[0].category === 'book' || dbData[0].category === 'product'){
+        console.log("It is a book or product; searching amazon");
+        amazon.searchByProduct(dbData[0].recommendation_request)
+          .then((apiData) => {
+            let data = {};
+            data.dbData = dbData[0];
+            data.apiData = apiData;
+            console.log(data);
+            return res.json(data);
+          })
+      }
+        else if (dbData[0].category == 'uncategorized') {
         console.log("uncategorized item; perform searching");
         console.log("first; search in yelp");
         yelp.randomSearchByname(req.params.tid).
@@ -222,6 +234,7 @@ module.exports = (datahelper) => {
         console.log(req.body.email);
 
         req.session.user_id = data[0].id;
+        req.session.email = data[0].email;
         return res.redirect('/');
       }
     }).

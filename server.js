@@ -37,7 +37,9 @@ app.use(cookieSession({
 //locals
 app.use(function (req, res, next) {
   const session = req.session.user_id;
+  const email = req.session.email
   res.locals.user_id = session;
+  res.locals.user_email = email;
   next();
 });
 
