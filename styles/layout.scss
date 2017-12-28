@@ -20,8 +20,22 @@ body{
   padding: 10px;
 }
 
+.face {
+  margin-top: 50px;
+}
+
+.lg-form form{
+  margin: 0 auto;
+  width: 60%;
+}
 
 .face {
-  margin-left: 25%;
-  margin-righ: 25%;
+  margin-top: 50px;
+}
+
+.loading-img {
+  padding: 0;
+  margin: 25px 0 0 0;
+  width: 200px;
+  display: none;
 }

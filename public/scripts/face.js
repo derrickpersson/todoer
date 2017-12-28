@@ -44,6 +44,7 @@ $(document).ready(function() {
     Webcam.snap(function(data_uri) {
       Webcam.on('uploadProgress', function(progress) {
         console.log(progress);
+        $(".loading-img").show();
       });
       Webcam.on('uploadComplete', function(code, text) {
         console.log("code", code);
