@@ -1,21 +1,19 @@
 $(() => {
-  function blankIfNull(item){
-    if(item === null){
+  function blankIfNull(item) {
+    if (item === null) {
       return "";
     }
-      return item;
+    return item;
   };
 
-
-
-  function dateChecker(date){
-    if(date === 'Invalid date'){
+  function dateChecker(date) {
+    if (date === 'Invalid date') {
       return "";
     }
     return date;
   }
 
-  function createTodo(todo){
+  function createTodo(todo) {
     return `<li class="list-group-item" data-todo_id="${todo.id}">
               <span class="todo-check"><input type="checkbox" class="todo-check"></span>${todo.title}
               <span class="label label-info">${todo.category}</span>
@@ -24,17 +22,17 @@ $(() => {
             `;
   };
 
-  function displayYelpRating(rating){
+  function displayYelpRating(rating) {
     var path = "Images/yelp_stars/web_and_ios/regular/regular_"
-    if(Number.isInteger(rating)){
+    if (Number.isInteger(rating)) {
       return `<img src="${path}${rating}.png" alt="${rating} / 5"/>`
-    }else{
+    } else {
       return `<img src="${path}${Math.floor(rating)}_half.png" alt="${rating} / 5" />`
     }
   }
 
 
-  function displayYelpInfo(todo){
+  function displayYelpInfo(todo) {
     return `<div class="panel panel-default">
              <div class="panel-heading">${todo.apiData.name}</div>
               <div class="panel-body">
@@ -45,7 +43,7 @@ $(() => {
             </div>`;
   }
 
-  function displayMovieInfo(todo){
+  function displayMovieInfo(todo) {
     return `<div class="panel panel-default">
               <div class="panel-heading">${todo.apiData.title}</div>
                 <div class="panel-body">
@@ -57,8 +55,8 @@ $(() => {
            `
   }
 
-function displayBookInfo(todo){
-  return `<div class="panel panel-default">
+  function displayBookInfo(todo) {
+    return `<div class="panel panel-default">
             <div class="panel-heading">${todo.apiData.ItemAttributes.Title}</div>
               <div class="panel-body">
                 <p class="font-weight-light">Author: ${todo.apiData.ItemAttributes.Author}</p>
@@ -69,8 +67,8 @@ function displayBookInfo(todo){
          `;
   }
 
-function displayProductInfo(todo){
-  return `<div class="panel panel-default">
+  function displayProductInfo(todo) {
+    return `<div class="panel panel-default">
             <div class="panel-heading">${todo.apiData.ItemAttributes.Title}</div>
               <div class="panel-body">
                 <p class="font-weight-light"><a href="${todo.apiData.DetailPageURL}"> More Details </a></p>
@@ -80,19 +78,19 @@ function displayProductInfo(todo){
          `;
   }
 
-  function displayCategoryInfo(todo, category){
-    if(category === 'restaurant'){
+  function displayCategoryInfo(todo, category) {
+    if (category === 'restaurant') {
       return displayYelpInfo(todo);
-    }else if(category === 'movie'){
+    } else if (category === 'movie') {
       return displayMovieInfo(todo);
-    }else if(category === 'product'){
+    } else if (category === 'product') {
       return displayProductInfo(todo);
-    }else if(category === 'book'){
+    } else if (category === 'book') {
       return displayBookInfo(todo);
     }
   }
 
-  function createExpandedTodo(todo){
+  function createExpandedTodo(todo) {
     return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo.dbData.id}">
               <span class="todo-check"><input type="checkbox" class="todo-check"></span>${todo.dbData.title}
               <span class="label label-info">${todo.dbData.category}</span>
@@ -105,7 +103,7 @@ function displayProductInfo(todo){
             `;
   };
 
-  function createNotFoundTodo(todo){
+  function createNotFoundTodo(todo) {
     return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo.dbData.id}">
             <span class="todo-check"><input type="checkbox" class="todo-check"></span>${todo.dbData.title}
             <span class="label label-info">${todo.dbData.category}</span>
@@ -117,18 +115,7 @@ function displayProductInfo(todo){
           `;
   };
 
-// function foodDetails(apiData) {
-//   return `
-//     <li class="list-group-item">Name: ${apiData.name}</li>
-//     <li class="list-group-item">Rating: ${apiData.rating}</li>
-//     <li class="list-group-item">Address: ${apiData.location.address1}</li>
-//     <li class="list-group-item">Phone: ${apiData.display_phone}</li>
-//   `;
-// }
-
-
-
-  function createEditableTodo(todo){
+  function createEditableTodo(todo) {
     return `<li class="list-group-item list-group-item list-group-item-action flex-column align-items-start" data-todo_id="${todo.id}">
               <form id="todo-edit">
                 <span class="todo-check"><input name="complete" type="checkbox" class="todo-check"></span>
@@ -148,16 +135,15 @@ function displayProductInfo(todo){
           `;
   };
 
-  function createCompletedTodo(todo){
+  function createCompletedTodo(todo) {
     return `<li class="list-group-item disabled" data-todo_id="${todo.id}">
               <span class="todo-check"><input type="checkbox" class="todo-check" checked></span>${todo.title}
               <span class="label label-info">${todo.category}</span>
-              <a class="btn btn-primary btn-xs pull-right" href="#" role="button">Details</a>
             </li>
             `;
   };
 
-  function createTableLayout(){
+  function createTableLayout() {
     return `<div class="row">
               <div class="col-md-6">
                 <h2> Movies: </h2>
@@ -185,28 +171,28 @@ function displayProductInfo(todo){
            `
   }
 
-  function createListLayout(){
+  function createListLayout() {
     return `<ul class="list-group" id="todos-container">
             </ul>
            `
   }
 
-function bar() {
-   return `<img id="lodaing" src="./Images/loading.gif">`;
-};
+  function bar() {
+    return `<img id="lodaing" src="./Images/loading.gif">`;
+  };
 
-  function renderTodos(todos){
+  function renderTodos(todos) {
     $('#todos-container').empty().html(todos.map(createTodo).reverse());
   };
 
-  function renderCategoryTodos(todos, category){
+  function renderCategoryTodos(todos, category) {
     // let categoryTodos = todos.filter(function(todo){
     //   todo.category === "Movie"});
 
-    let manualFilter = function(todos){
+    let manualFilter = function(todos) {
       let results = [];
-      for(let i = 0; i < todos.length; i++){
-        if(todos[i].category === category){
+      for (let i = 0; i < todos.length; i++) {
+        if (todos[i].category === category) {
           results.push(todos[i]);
         }
       }
@@ -217,48 +203,48 @@ function bar() {
     $(selector).empty().html(mappedTodos);
   };
 
-  function renderCompleteTodos(todos){
+  function renderCompleteTodos(todos) {
     $('#complete-todos').empty().html(todos.map(createCompletedTodo).reverse());
   };
 
   var user_id = $('#userId').data().userid;
   let view_state = "List";
 
-  function loadTodos(userId){
+  function loadTodos(userId) {
     $.ajax({
       url: `/users/${userId}/todos`,
       method: 'GET',
       datatype: 'json'
-    }).done(function(results){
+    }).done(function(results) {
       renderTodos(results);
     })
   };
 
   loadTodos(user_id);
 
-  function loadCompleteTodos(userId){
+  function loadCompleteTodos(userId) {
     $.ajax({
       url: `/users/${userId}/todos/complete`,
       method: 'GET',
       datatype: 'json'
-    }).done(function(results){
+    }).done(function(results) {
       renderCompleteTodos(results);
     })
   };
 
   loadCompleteTodos(user_id);
 
-  function loadCategoryTodos(userId, category){
+  function loadCategoryTodos(userId, category) {
     $.ajax({
       url: `/users/${userId}/todos`,
       method: 'GET',
       datatype: 'json'
-    }).done(function(results){
+    }).done(function(results) {
       renderCategoryTodos(results, category);
     })
   };
 
-  function loadAllCategories(userId){
+  function loadAllCategories(userId) {
     loadCategoryTodos(userId, "movie");
     loadCategoryTodos(userId, "book");
     loadCategoryTodos(userId, "product");
@@ -277,7 +263,7 @@ function bar() {
   //   }
   // }
 
-  $('#list-view').on('click', function(event){
+  $('#list-view').on('click', function(event) {
     $(this).addClass('active');
     $(this).parent().find('#table-view').removeClass('active');
     $('#movie').parent().parent().parent().empty().html(createListLayout());
@@ -286,7 +272,7 @@ function bar() {
     view_state = "List";
   })
 
-  $('#table-view').on('click', function(event){
+  $('#table-view').on('click', function(event) {
     $(this).addClass('active');
     $(this).parent().find('#list-view').removeClass('active');
     $('#todos-container').parent().empty().html(createTableLayout());
@@ -294,7 +280,7 @@ function bar() {
     view_state = "Table";
   })
 
-  $('#new-todo').on('submit', function(event){
+  $('#new-todo').on('submit', function(event) {
     event.preventDefault();
     // console.log($('#new-todo').serialize());
     let newTodo = $('#new-todo input').val();
@@ -310,8 +296,8 @@ function bar() {
       url: `/users/${user_id}/todos/new`,
       method: "POST",
       //data: $('#new-todo').serialize()
-        data: sendData
-    }).done(function () {
+      data: sendData
+    }).done(function() {
       $(event.target).trigger('reset');
       loadTodos(user_id);
       loadAllCategories(user_id);
@@ -319,10 +305,10 @@ function bar() {
   })
 
   // Complete a todo
-  $('#todos-container-container').on('click', 'input' ,function(event){
+  $('#todos-container-container').on('click', 'input', function(event) {
     const todo_id = $(this).parent().parent().data().todo_id;
     const todo_li = $(this).parent().parent();
-    if($(this).is(':checked')){
+    if ($(this).is(':checked')) {
       $.ajax({
         url: `/users/${user_id}/todos/${todo_id}`,
         method: "POST",
@@ -330,7 +316,7 @@ function bar() {
           id: todo_id,
           complete: true
         }
-      }).done(function(){
+      }).done(function() {
         loadTodos(user_id);
         loadCompleteTodos(user_id);
         loadAllCategories(user_id);
@@ -339,10 +325,10 @@ function bar() {
   })
 
   // Un-complete a todo
-  $('#complete-todos').on('click', 'input' ,function(event){
+  $('#complete-todos').on('click', 'input', function(event) {
     const todo_id = $(this).parent().parent().data().todo_id;
     const todo_li = $(this).parent().parent();
-    if(!$(this).is(':checked')){
+    if (!$(this).is(':checked')) {
       $.ajax({
         url: `/users/${user_id}/todos/${todo_id}`,
         method: "POST",
@@ -350,7 +336,7 @@ function bar() {
           id: todo_id,
           complete: false
         }
-      }).done(function(){
+      }).done(function() {
         loadTodos(user_id);
         loadCompleteTodos(user_id);
         loadAllCategories(user_id);
@@ -360,67 +346,68 @@ function bar() {
 
 
   // Show details of a todo
-  $('#todos-container-container').on('click', '#show-details' ,function(event){
+  $('#todos-container-container').on('click', '#show-details', function(event) {
     event.preventDefault();
     const todo_id = $(this).parent().data().todo_id;
     const todo_li = $(this).parent();
     todo_li.replaceWith(bar());
     $.ajax({
-      method:"GET",
+      method: "GET",
       url: `/users/${user_id}/todos/${todo_id}`,
       datatype: 'json'
-    }).done(function(data){
+    }).done(function(data) {
       // Replace the single li with the new li with details.
       if (data.apiData !== null) {
         $('#lodaing').replaceWith(createExpandedTodo(data));
       }
       //
       else if (data.apiData === null) {
-      //  data.apiData = data.dbData;
-      $('#lodaing').replaceWith(createNotFoundTodo(data));
+        console.log("dataaa", data);
+        //  data.apiData = data.dbData;
+        $('#lodaing').replaceWith(createNotFoundTodo(data));
       }
     })
   });
 
   // Hide details of a todo
-  $('#todos-container-container').on('click', '#hide-details' ,function(event){
+  $('#todos-container-container').on('click', '#hide-details', function(event) {
     event.preventDefault();
     const todo_id = $(this).parent().data().todo_id;
     const todo_li = $(this).parent();
     $.ajax({
-      method:"GET",
+      method: "GET",
       url: `/users/${user_id}/todos/db/${todo_id}`,
       datatype: 'json'
-    }).done(function(data){
+    }).done(function(data) {
       // Replace the single li with the new li with details.
       todo_li.replaceWith(createTodo(data));
     })
   });
 
   // Show details of a todo
-  $('#todos-container-container').on('click', '#delete' ,function(event){
+  $('#todos-container-container').on('click', '#delete', function(event) {
     event.preventDefault();
     const todo_id = $(this).parent().data().todo_id;
     const todo_li = $(this).parent();
     $.ajax({
-      method:"POST",
+      method: "POST",
       url: `/users/${user_id}/todos/${todo_id}/delete`,
-    }).done(function(data){
+    }).done(function(data) {
       todo_li.remove();
       console.log("Successfully deleted");
     })
   });
 
   // Get editable from
-  $('#todos-container-container').on('click', '#edit' ,function(event){
+  $('#todos-container-container').on('click', '#edit', function(event) {
     event.preventDefault();
     const todo_id = $(this).parent().data().todo_id;
     const todo_li = $(this).parent();
     $.ajax({
-      method:"GET",
+      method: "GET",
       url: `/users/${user_id}/todos/db/${todo_id}`,
       datatype: 'json'
-    }).done(function(data){
+    }).done(function(data) {
       // Replace the single li with the new li with details.
       todo_li.replaceWith(createEditableTodo(data));
     })
@@ -428,7 +415,7 @@ function bar() {
 
 
   // Update todo with new info
-  $('#todos-container-container').on('submit', '#todo-edit', function(event){
+  $('#todos-container-container').on('submit', '#todo-edit', function(event) {
     event.preventDefault();
     const todo_id = $(this).parent().data().todo_id;
     const todo_li = $(this).parent();
@@ -440,7 +427,7 @@ function bar() {
     };
 
     // Only add the date if it isn't null
-    if(dateChecker(moment($('#due_date').val()).format('YYYY-MM-DD'))){
+    if (dateChecker(moment($('#due_date').val()).format('YYYY-MM-DD'))) {
       sendData.due_date = moment($('#due_date').val()).format('YYYY-MM-DD');
     };
 
@@ -448,12 +435,12 @@ function bar() {
       method: "POST",
       url: `/users/${user_id}/todos/${todo_id}`,
       data: sendData
-    }).then( (data) => {
+    }).then((data) => {
       $.ajax({
-        method:"GET",
+        method: "GET",
         url: `/users/${user_id}/todos/db/${todo_id}`,
         datatype: 'json'
-      }).done(function(data){
+      }).done(function(data) {
         // Replace the single li with the new li with details.//
 
         //todo_li.replaceWith(createExpandedTodo(data));
@@ -463,16 +450,16 @@ function bar() {
     })
   });
 
-// Cancel editing the todo
-  $('#todos-container-container').on('click', '#cancel', function(event){
+  // Cancel editing the todo
+  $('#todos-container-container').on('click', '#cancel', function(event) {
     event.preventDefault();
     const todo_id = $(this).parent().parent().data().todo_id;
     const todo_li = $(this).parent().parent();
     $.ajax({
-      method:"GET",
+      method: "GET",
       url: `/users/${user_id}/todos/db/${todo_id}`,
       datatype: 'json'
-    }).done(function(data){
+    }).done(function(data) {
       // Replace the single li with the new li with details.
       todo_li.replaceWith(createTodo(data));
     });
@@ -480,17 +467,3 @@ function bar() {
 
 
 });
-
-// Bugs note:
-// Fix username display name
-//    Fix user_id into sessions
-// When you change the category away from what it is - it hangs.
-//    You are then unable to change the category back because you can't view details
-// Need to thoroughly test the categorization / API portion of the function.
-
-// TODO:
-// Add in 3 different sections to display in details section.
-//    Add in movie display section
-//    Add in products display section
-// Add in classifiers for all 4 categories
-//  Classifier optimization

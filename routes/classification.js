@@ -65,7 +65,7 @@ module.exports = () => {
       });
       let food = getType(clean, eat, 'restaurant');
       let movie = getType(clean, watch, 'movie');
-      let book  = getType(clean, read, 'book');
+      let book = getType(clean, read, 'book');
       let product = getType(clean, buy, 'product');
       if (food.action != 'uncategorized') {
         obj.action = food.action;

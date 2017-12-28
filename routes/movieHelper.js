@@ -1,12 +1,11 @@
 const request = require('request');
 const token = process.env.MOVIE_TOKEN;
 
-console.log("token", token);
-
 var showTimeBydateAndZip = (zip, date) => {
   return new Promise((resolve, reject) => {
-    request(`http://data.tmsapi.com/v1.1/movies/showings?startDate=${date}&zip=${zip}&api_key=${token}`,
-      { json: true }, (err, res, body) => {
+    request(`http://data.tmsapi.com/v1.1/movies/showings?startDate=${date}&zip=${zip}&api_key=${token}`, {
+      json: true
+    }, (err, res, body) => {
       if (err) reject(err);
       resolve(body);
     })
@@ -17,8 +16,6 @@ var searchByname = (title, today) => {
   return new Promise((resolve, reject) => {
     showTimeBydateAndZip('V6J4L2', today).
     then((data) => {
-      //console.log("current searByname found", data);
-      //if (!data) return Promise.resolve(null);
       let result = null;
       console.log("____________________________");
       console.log(typeof data);
@@ -41,7 +38,7 @@ var searchByname = (title, today) => {
 }
 
 
-var searchBackward = (name,today) => {
+var searchBackward = (name, today) => {
   return new Promise((resolve, reject) => {
     console.log("Back: current search movie", name);
     searchByname(name, today).
@@ -54,8 +51,8 @@ var searchBackward = (name,today) => {
   }).then((data) => {
     let nextSearch = [];
     let temp = name.split(' ');
-    temp.forEach((w,i) => {
-      (i < temp.lengh - 1) ? nextSearch.push(w) : void 0;
+    temp.forEach((w, i) => {
+      (i < temp.lengh - 1) ? nextSearch.push(w): void 0;
     });
     console.log("Back: next search movie");
     if (data != null && data.title == name) {
@@ -68,8 +65,8 @@ var searchBackward = (name,today) => {
   });
 }
 
-var randomSearch = (name,today) => {
-  return new Promise ((resolve, reject) => {
+var randomSearch = (name, today) => {
+  return new Promise((resolve, reject) => {
     console.log("Forward: current search movie", name);
     if (name.length === 0) resolve(null);
     searchByname(name, today).
@@ -83,8 +80,7 @@ var randomSearch = (name,today) => {
           if (backData != null) {
             console.log("backward found", backData);
             resolve(backData);
-          }
-          else if (backData == null) resolve(null);
+          } else if (backData == null) resolve(null);
         });
       }
     });
@@ -115,30 +111,9 @@ module.exports = () => {
           resolve(data);
         }).
         catch((err) => {
-          reject (err);
+          reject(err);
         })
       })
     }
-    // randomSearchByname: (title, today) => {
-    //   return new Promise((resolve, reject) => {
-    //     showTimeBydateAndZip('V3R2T2', today).
-    //     then((data) => {
-    //       //console.log("current searByname found", data);
-    //       if (!data) return Promise.resolve(null);
-    //       let result = null;
-    //       data.forEach((movie) => {
-    //         if (movie.title.toLowerCase() === title) {
-    //           console.log("found movie", movie);
-    //           result = movie;
-    //         }
-    //       });
-    //       resolve(result);
-    //     }).
-    //     catch((err) => {
-    //       console.log(err);
-    //       reject(err);
-    //     })
-    //   })
-    // }
   }
 }

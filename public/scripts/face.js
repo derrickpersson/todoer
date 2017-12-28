@@ -1,25 +1,37 @@
 $(document).ready(function() {
-  Webcam.attach( '#my_camera' );
+  Webcam.attach('#my_camera');
   var add_to_collection = function() {
-    var photo_id = $("#photo_id").val();
+    var email = $("#photo_id").val();
     if (!photo_id.length) {
       $('#upload_status').html("please provide name for the upload");
       return;
     }
     //$('#loading_img').show()
-    Webcam.snap( function(data_uri) {
+    Webcam.snap(function(data_uri) {
       console.log(data_uri);
-      document.getElementById('my_result').innerHTML = '<img src="'+data_uri+'"/>';
+      document.getElementById('my_result').innerHTML = '<img src="' + data_uri + '"/>';
       //$('#loading_img').show()
       Webcam.on('uploadProgress', function(progress) {
         console.log(progress);
       });
-      Webcam.on('uploadComplete', function(code,text) {
+      Webcam.on('uploadComplete', function(code, text) {
         console.log(code);
         console.log(text);
         //$('#loading_img').hide()
+        }).done(() => {
+          console.log("good");
+          let sendData = {
+            email: email,
+            password: "123"
+          }
+          $.ajax({
+            url: "/users/new",
+            method: 'POST',
+            data: sendData
+          });
+        window.location.replace("http://localhost:8080");
       });
-      Webcam.upload(data_uri, `/face/saveimage/${photo_id}`);
+      Webcam.upload(data_uri, `/users/saveimage/${photo_id}`);
     })
   }
 
@@ -29,24 +41,16 @@ $(document).ready(function() {
       $('#upload_status').html("please provide account ID for the upload");
       return;
     }
-    //$('#loading_img').show()
-    Webcam.snap( function(data_uri) {
-      //console.log(data_uri);
-      //document.getElementById('my_result').innerHTML = '<img src="'+data_uri+'"/>';
-      //$('#loading_img').show()
+    Webcam.snap(function(data_uri) {
       Webcam.on('uploadProgress', function(progress) {
         console.log(progress);
       });
-      Webcam.on('uploadComplete', function(code,text) {
-        console.log("code",code);
-        console.log("text",text);
-        //console.log("text con", Object.keys(text.confidence));
+      Webcam.on('uploadComplete', function(code, text) {
+        console.log("code", code);
+        console.log("text", text);
         let data = JSON.parse(text)
         console.log(data);
         console.log(data.Confidence);
-        //console.log("text",text);
-        //console.log(Object.keys(text));
-        //$('#loading_img').hide()
         let sendData = {
           email: photo_id
         }
@@ -66,14 +70,12 @@ $(document).ready(function() {
     })
   }
 
-
-
-
   //take a photo
-  $('#take').click(function () {
+  $('#take').click(function() {
+    console.log("take");
     add_to_collection();
   })
-  $('#compare_image').click(function () {
+  $('#compare_image').click(function() {
     compareImage();
   })
 });
