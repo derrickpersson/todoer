@@ -264,14 +264,19 @@ module.exports = (datahelper) => {
   // update a to do:
   router.post('/:uid/todos/:tid', (req, res) => {
     // update todo by id.
-    let clean = nlp.classifier(req.body.title).target;
+    let request = req.body.recommendation_request;
+    console.log("title", req.body.title);
+    if (req.body.title != undefined) {
+      request = nlp.classifier(req.body.title).target;
+    }
+
     let todo = {
       id: req.body.id,
       title: req.body.title,
       description: req.body.description,
       due_date: req.body.due_date,
       complete: req.body.complete || false,
-      recommendation_request: clean,
+      recommendation_request: request,
       category: req.body.category
     };
     console.log(todo);
