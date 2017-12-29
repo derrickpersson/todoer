@@ -31,7 +31,6 @@ $(() => {
     }
   }
 
-
   function displayYelpInfo(todo) {
     return `<div class="panel panel-default">
              <div class="panel-heading">${todo.apiData.name}</div>
@@ -253,16 +252,6 @@ $(() => {
 
   loadTodos(user_id);
 
-  // function renderViewState(userId){
-  //   if(view_state === "List"){
-  //     loadCompleteTodos(user_id);
-  //     loadTodos(user_id);
-  //   }else{
-  //     loadAllCategories(userId);
-  //     loadCompleteTodos(user_id);
-  //   }
-  // }
-
   $('#list-view').on('click', function(event) {
     $(this).addClass('active');
     $(this).parent().find('#table-view').removeClass('active');
@@ -282,12 +271,7 @@ $(() => {
 
   $('#new-todo').on('submit', function(event) {
     event.preventDefault();
-    // console.log($('#new-todo').serialize());
     let newTodo = $('#new-todo input').val();
-    // console.log(newTodo);
-    // let cat = classifier(newTodo);
-    // console.log('clean',cat);
-
     let sendData = {
       title: newTodo
     };
@@ -303,7 +287,6 @@ $(() => {
       loadAllCategories(user_id);
     });
   })
-
   // Complete a todo
   $('#todos-container-container').on('click', 'input', function(event) {
     const todo_id = $(this).parent().parent().data().todo_id;
@@ -323,7 +306,6 @@ $(() => {
       })
     }
   })
-
   // Un-complete a todo
   $('#complete-todos').on('click', 'input', function(event) {
     const todo_id = $(this).parent().parent().data().todo_id;
@@ -343,8 +325,6 @@ $(() => {
       });
     }
   });
-
-
   // Show details of a todo
   $('#todos-container-container').on('click', '#show-details', function(event) {
     event.preventDefault();
@@ -368,7 +348,6 @@ $(() => {
       }
     })
   });
-
   // Hide details of a todo
   $('#todos-container-container').on('click', '#hide-details', function(event) {
     event.preventDefault();
@@ -383,7 +362,6 @@ $(() => {
       todo_li.replaceWith(createTodo(data));
     })
   });
-
   // Show details of a todo
   $('#todos-container-container').on('click', '#delete', function(event) {
     event.preventDefault();
@@ -397,7 +375,6 @@ $(() => {
       console.log("Successfully deleted");
     })
   });
-
   // Get editable from
   $('#todos-container-container').on('click', '#edit', function(event) {
     event.preventDefault();
@@ -412,8 +389,6 @@ $(() => {
       todo_li.replaceWith(createEditableTodo(data));
     })
   });
-
-
   // Update todo with new info
   $('#todos-container-container').on('submit', '#todo-edit', function(event) {
     event.preventDefault();
@@ -425,12 +400,10 @@ $(() => {
       description: $('#description').val() || null,
       category: $('#category').val() || null
     };
-
     // Only add the date if it isn't null
     if (dateChecker(moment($('#due_date').val()).format('YYYY-MM-DD'))) {
       sendData.due_date = moment($('#due_date').val()).format('YYYY-MM-DD');
     };
-
     $.ajax({
       method: "POST",
       url: `/users/${user_id}/todos/${todo_id}`,
@@ -441,15 +414,10 @@ $(() => {
         url: `/users/${user_id}/todos/db/${todo_id}`,
         datatype: 'json'
       }).done(function(data) {
-        // Replace the single li with the new li with details.//
-
-        //todo_li.replaceWith(createExpandedTodo(data));
         todo_li.replaceWith(createTodo(data));
-
       })
     })
   });
-
   // Cancel editing the todo
   $('#todos-container-container').on('click', '#cancel', function(event) {
     event.preventDefault();
@@ -464,6 +432,4 @@ $(() => {
       todo_li.replaceWith(createTodo(data));
     });
   });
-
-
 });

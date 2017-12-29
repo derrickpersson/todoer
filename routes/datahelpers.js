@@ -29,7 +29,6 @@ module.exports = function makeDataHelpers(db){
         .where('user_id', '=', userid)
         .andWhere('complete', '=', false)
     },
-
     // Create a new to do when given title
     createTodo: function(title, userId,category, destination){
       return db('todos').insert({
@@ -51,8 +50,7 @@ module.exports = function makeDataHelpers(db){
           reject(err);
         });
       })
-    }
-    ,
+    },
     // Get all the categories assigned to a to do
     getTodoCategories: function(taskId){
       return db.select('categories.name').from('todos')
@@ -78,7 +76,6 @@ module.exports = function makeDataHelpers(db){
         password: password
       });
     },
-
     loginUser: function (email, password) {
       return db.select('password', 'id', 'email').
                 from('users').
@@ -89,13 +86,11 @@ module.exports = function makeDataHelpers(db){
       return db('todos').where('id', '=', taskId)
         .del()
     },
-
     getCompleteToDos: function(userId){
       return db.select('*').from('todos')
         .where('user_id', '=', userId)
         .andWhere('complete', '=', true)
     },
-
     getSingleTodo: function(taskId){
       return db. select('*').from('todos')
         .where('id', '=', taskId)

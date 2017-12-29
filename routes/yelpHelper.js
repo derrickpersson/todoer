@@ -88,7 +88,6 @@ var randomSearch = (itemStr) => {
   })
 };
 
-
 module.exports = () => {
   return {
     randomSearchByname: (todoID) => {

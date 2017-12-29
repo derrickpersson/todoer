@@ -37,7 +37,6 @@ var searchByname = (title, today) => {
   })
 }
 
-
 var searchBackward = (name, today) => {
   return new Promise((resolve, reject) => {
     console.log("Back: current search movie", name);
